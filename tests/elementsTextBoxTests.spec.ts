@@ -20,7 +20,7 @@ test('Fill all textbox fields in Elements page and submit', async ({page}) => {
     // Select the text box menu item
     await elementsPage.selectTextBox();
     expect(await elementsPage.isTextBoxHeaderVisible()).toBe(true);
-    
+
     // Fill the text box form
     await elementsPage.fillAllTextBoxFormPage(fullName, email, currentAddress, permanentAddress);
     await elementsPage.submitForm();

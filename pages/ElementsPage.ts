@@ -44,8 +44,8 @@ export default class ElementsPage {
   async expectFormSubmissionResults(fullName: string, email: string, currentAddress: string, permanentAddress: string){
     const nameResult = this.page.locator('#name');
     const emailResult = this.page.locator('#email');
-    const currentAddressResult = this.page.locator('#currentAddress');
-    const permanentAddressResult = this.page.locator('#permanentAddress');
+    const currentAddressResult = this.page.locator('#currentAddress').nth(1);
+    const permanentAddressResult = this.page.locator('#permanentAddress').nth(1);
 
     await expect(nameResult).toBeVisible();
     await expect(nameResult).toHaveText(`Name:${fullName}`);
