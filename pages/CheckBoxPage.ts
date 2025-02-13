@@ -11,6 +11,12 @@ export default class CheckBoxPage {
   readonly collapsedCheckBoxHome: Locator;
   readonly expandedCheckBoxHome: Locator;
   readonly selectedHomeCheckBoxResult: Locator;
+  readonly expandAllButton: Locator;
+  readonly collapseAllButton: Locator;
+  readonly expandedDesktopNode: Locator;
+  readonly expandedDocumentsNode: Locator;
+  readonly expandedOfficeNode: Locator;
+  readonly expandedDownloadNode: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -18,10 +24,16 @@ export default class CheckBoxPage {
     this.checkBoxHome = page.locator('label[for="tree-node-home"]');
     this.checkBoxIconChecked = page.locator('label[for="tree-node-home"] svg.rct-icon.rct-icon-check');
     this.checkBoxIconUnchecked = page.locator('label[for="tree-node-home"] svg.rct-icon.rct-icon-uncheck');
-    this.toggleButtonHome = page.getByRole('button', { name: 'Toggle' }).first()
+    this.toggleButtonHome = page.getByRole('button', { name: 'Toggle' }).first();
     this.collapsedCheckBoxHome = page.locator('li.rct-node.rct-node-parent.rct-node-collapsed:has(span.rct-title:has-text("Home"))');
     this.expandedCheckBoxHome = page.locator('li.rct-node.rct-node-parent.rct-node-expanded:has(span.rct-title:has-text("Home"))');
     this.selectedHomeCheckBoxResult = page.locator('#result .text-success');
+    this.expandAllButton = page.locator('button[aria-label="Expand all"][title="Expand all"]');
+    this.collapseAllButton = page.locator('button[aria-label="Collapse all"][title="Collapse all"]');
+    this.expandedDesktopNode = page.locator('li.rct-node.rct-node-parent.rct-node-expanded:has(span.rct-title:has-text("Desktop")):nth-of-type(1) span.rct-title:has-text("Desktop")');
+    this.expandedDocumentsNode = page.locator('li.rct-node.rct-node-parent.rct-node-expanded:has(span.rct-title:has-text("Documents")):nth-of-type(1) span.rct-title:has-text("Documents")');
+    this.expandedOfficeNode = page.locator('li.rct-node.rct-node-parent.rct-node-expanded:has(span.rct-title:has-text("Office")):nth-of-type(1) span.rct-title:has-text("Office")');
+    this.expandedDownloadNode = page.locator('li.rct-node.rct-node-parent.rct-node-expanded:has(span.rct-title:has-text("Downloads")):nth-of-type(1) span.rct-title:has-text("Downloads")');
   }
 
   async toggleCheckBox() {
@@ -61,8 +73,48 @@ export default class CheckBoxPage {
     return await this.expandedCheckBoxHome.isVisible();
   }
 
-  async validateSelectedElements(expectedElements: string[]): Promise<boolean>{
+  async expandAllCheckboxes() {
+    await this.expandAllButton.click();
+  }
+
+  async collapseAllCheckboxes() {
+    await this.collapseAllButton.click();
+  }
+
+  async validateSelectedHomeElements(expectedElements: string[]): Promise<boolean> {
     const elements = await this.selectedHomeCheckBoxResult.allTextContents();
     return expectedElements.every(element => elements.includes(element));
+  }
+
+  async isExpandedDesktopNodeVisible(): Promise<boolean> {
+    return await this.expandedDesktopNode.isVisible();
+  }
+
+  async isExpandedDocumentsNodeVisible(): Promise<boolean> {
+    return await this.expandedDocumentsNode.isVisible();
+  }
+
+  async isExpandedOfficeNodeVisible(): Promise<boolean> {
+    return await this.expandedOfficeNode.isVisible();
+  }
+
+  async isExpandedDownloadNodeVisible(): Promise<boolean> {
+    return await this.expandedDownloadNode.isVisible();
+  }
+
+  async isExpandedDesktopNodeNotVisible(): Promise<boolean> {
+    return await this.expandedDesktopNode.isHidden();
+  }
+
+  async isExpandedDocumentsNodeNotVisible(): Promise<boolean> {
+    return await this.expandedDocumentsNode.isHidden();
+  }
+
+  async isExpandedOfficeNodeNotVisible(): Promise<boolean> {
+    return await this.expandedOfficeNode.isHidden();
+  }
+
+  async isExpandedDownloadNodeNotVisible(): Promise<boolean> {
+    return await this.expandedDownloadNode.isHidden();
   }
 }
