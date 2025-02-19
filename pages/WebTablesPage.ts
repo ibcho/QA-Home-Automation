@@ -1,7 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import ElementsPage from '../pages/ElementsPage';
 
-// filepath: /c:/Users/IbrahimGavazov/Projects/QA-Home-Automation/pages/WebTablesPage.ts
 export default class WebTablesPage {
     readonly page: Page;
 
@@ -82,14 +80,15 @@ export default class WebTablesPage {
         await this.submitButton.click();
     }
 
-    // Verify validation messages for empty fields
+    // Method to verify validation messages for empty fields
     async verifyInvalidFieldBorderColor(): Promise<void> {
-        await expect(this.firstNameField).toHaveCSS('border-color', 'rgb(220, 53, 69)');
-        await expect(this.lastNameField).toHaveCSS('border-color', 'rgb(220, 53, 69)');
-        await expect(this.emailField).toHaveCSS('border-color', 'rgb(220, 53, 69)');
-        await expect(this.ageField).toHaveCSS('border-color', 'rgb(220, 53, 69)');
-        await expect(this.salaryField).toHaveCSS('border-color', 'rgb(220, 53, 69)');
-        await expect(this.departmentField).toHaveCSS('border-color', 'rgb(220, 53, 69)');
+        const invalidBorderColor = 'rgb(220, 53, 69)';
+        await expect(this.firstNameField).toHaveCSS('border-color', invalidBorderColor);
+        await expect(this.lastNameField).toHaveCSS('border-color', invalidBorderColor);
+        await expect(this.emailField).toHaveCSS('border-color', invalidBorderColor);
+        await expect(this.ageField).toHaveCSS('border-color', invalidBorderColor);
+        await expect(this.salaryField).toHaveCSS('border-color', invalidBorderColor);
+        await expect(this.departmentField).toHaveCSS('border-color', invalidBorderColor);
     }
 
     // Method to fill the registration form with valid data
@@ -102,14 +101,15 @@ export default class WebTablesPage {
         await this.departmentField.fill(department);
     }
 
-    // Verify that the fields have valid data
+    // Method to verify that the fields have valid data
     async verifyValidFieldBorderColor(): Promise<void> {
-        await expect(this.firstNameField).toHaveCSS('border-color', 'rgb(40, 167, 69)');
-        await expect(this.lastNameField).toHaveCSS('border-color', 'rgb(40, 167, 69)');
-        await expect(this.emailField).toHaveCSS('border-color', 'rgb(40, 167, 69)');
-        await expect(this.ageField).toHaveCSS('border-color', 'rgb(40, 167, 69)');
-        await expect(this.salaryField).toHaveCSS('border-color', 'rgb(40, 167, 69)');
-        await expect(this.departmentField).toHaveCSS('border-color', 'rgb(40, 167, 69)');
+        const validBorderColor = 'rgb(40, 167, 69)';
+        await expect(this.firstNameField).toHaveCSS('border-color', validBorderColor);
+        await expect(this.lastNameField).toHaveCSS('border-color', validBorderColor);
+        await expect(this.emailField).toHaveCSS('border-color', validBorderColor);
+        await expect(this.ageField).toHaveCSS('border-color', validBorderColor);
+        await expect(this.salaryField).toHaveCSS('border-color', validBorderColor);
+        await expect(this.departmentField).toHaveCSS('border-color', validBorderColor);
     }
 
     // Method to verify the maximum length of the fields
@@ -123,11 +123,13 @@ export default class WebTablesPage {
 
     // Method to verify email pattern validation
     async verifyEmailPatternValidation(): Promise<void> {
-        await expect(this.emailField).toHaveAttribute('pattern', '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$');
+        const emailPattern = '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$';
+        await expect(this.emailField).toHaveAttribute('pattern', emailPattern);
     }
 
     // Method to verify age pattern validation
     async verifyAgePatternValidation(): Promise<void> {
-        await expect(this.ageField).toHaveAttribute('pattern', '\\d*');
+        const agePattern = '\\d*';
+        await expect(this.ageField).toHaveAttribute('pattern', agePattern);
     }
 }

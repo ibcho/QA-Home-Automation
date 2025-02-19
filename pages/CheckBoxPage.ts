@@ -1,6 +1,5 @@
 import { Locator, Page } from "@playwright/test";
 
-// filepath: /c:/Users/IbrahimGavazov/Projects/QA-Home-Automation/pages/CheckBoxPage.ts
 export default class CheckBoxPage {
   readonly page: Page;
   readonly checkBoxTitle: Locator;
@@ -36,6 +35,7 @@ export default class CheckBoxPage {
     this.expandedDownloadNode = page.locator('li.rct-node.rct-node-parent.rct-node-expanded:has(span.rct-title:has-text("Downloads")):nth-of-type(1) span.rct-title:has-text("Downloads")');
   }
 
+  // Methods to interact with checkboxes
   async toggleCheckBox() {
     await this.checkBoxHome.click();
   }
@@ -44,10 +44,19 @@ export default class CheckBoxPage {
     await this.toggleButtonHome.click();
   }
 
-  async closeCheckBoxHome() {
+  async collapseCheckBoxHome() {
     await this.toggleButtonHome.click();
   }
 
+  async expandAllCheckboxes() {
+    await this.expandAllButton.click();
+  }
+
+  async collapseAllCheckboxes() {
+    await this.collapseAllButton.click();
+  }
+
+  // Methods to validate checkbox states
   async isCheckBoxTitleVisible(): Promise<boolean> {
     return await this.checkBoxTitle.isVisible();
   }
@@ -73,19 +82,12 @@ export default class CheckBoxPage {
     return await this.expandedCheckBoxHome.isVisible();
   }
 
-  async expandAllCheckboxes() {
-    await this.expandAllButton.click();
-  }
-
-  async collapseAllCheckboxes() {
-    await this.collapseAllButton.click();
-  }
-
   async validateSelectedHomeElements(expectedElements: string[]): Promise<boolean> {
     const elements = await this.selectedHomeCheckBoxResult.allTextContents();
     return expectedElements.every(element => elements.includes(element));
   }
 
+  // Methods to validate expanded nodes
   async isExpandedDesktopNodeVisible(): Promise<boolean> {
     return await this.expandedDesktopNode.isVisible();
   }

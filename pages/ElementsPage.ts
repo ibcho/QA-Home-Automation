@@ -1,66 +1,69 @@
 import { Locator, Page } from "@playwright/test";
-// filepath: /c:/Users/IbrahimGavazov/Projects/QA-Home-Automation/pages/elementsPage.ts
-
 
 export default class ElementsPage {
   readonly page: Page;
 
-  readonly textBoxMenuItem: Locator;
-  readonly checkBoxMenuItem: Locator;
-  readonly radioButtonMenuItem: Locator;
-  readonly webTablesMenuItem: Locator;
-  readonly buttonsMenuItem: Locator;
-  readonly linksMenuItem: Locator;
-  readonly brokenLinksImagesMenuItem: Locator;
-  readonly uploadDownloadMenuItem: Locator;
-  readonly dynamicPropertiesMenuItem: Locator;
+  readonly menuItems: { [key: string]: Locator };
 
   constructor(page: Page) {
     this.page = page;
-    this.textBoxMenuItem = page.locator('li.btn.btn-light', { hasText: 'Text Box' });
-    this.checkBoxMenuItem = page.locator('li.btn.btn-light', { hasText: 'Check Box' });
-    this.radioButtonMenuItem = page.locator('li.btn.btn-light', { hasText: 'Radio Button' });
-    this.webTablesMenuItem = page.locator('li.btn.btn-light', { hasText: 'Web Tables' });
-    this.buttonsMenuItem = page.locator('li.btn.btn-light', { hasText: 'Buttons' });
-    this.linksMenuItem = page.locator('li.btn.btn-light', { hasText: 'Links' });
-    this.brokenLinksImagesMenuItem = page.locator('li.btn.btn-light', { hasText: 'Broken Links - Images' });
-    this.uploadDownloadMenuItem = page.locator('li.btn.btn-light', { hasText: 'Upload and Download' });
-    this.dynamicPropertiesMenuItem = page.locator('li.btn.btn-light', { hasText: 'Dynamic Properties' });
+    this.menuItems = {
+      textBox: page.locator('li.btn.btn-light', { hasText: 'Text Box' }),
+      checkBox: page.locator('li.btn.btn-light', { hasText: 'Check Box' }),
+      radioButton: page.locator('li.btn.btn-light', { hasText: 'Radio Button' }),
+      webTables: page.locator('li.btn.btn-light', { hasText: 'Web Tables' }),
+      buttons: page.locator('li.btn.btn-light', { hasText: 'Buttons' }),
+      links: page.locator('li.btn.btn-light', { hasText: 'Links' }),
+      brokenLinksImages: page.locator('li.btn.btn-light', { hasText: 'Broken Links - Images' }),
+      uploadDownload: page.locator('li.btn.btn-light', { hasText: 'Upload and Download' }),
+      dynamicProperties: page.locator('li.btn.btn-light', { hasText: 'Dynamic Properties' }),
+    };
   }
 
+  // Helper method to navigate to a menu item
+  async navigateTo(menuItem: string) {
+    const locator = this.menuItems[menuItem];
+    if (locator) {
+      await locator.click();
+    } else {
+      throw new Error(`Menu item ${menuItem} not found`);
+    }
+  }
+
+  // Specific navigation methods
   async navigateToTextBox() {
-    await this.textBoxMenuItem.click();
+    await this.navigateTo('textBox');
   }
 
   async navigateToCheckBox() {
-    await this.checkBoxMenuItem.click();
+    await this.navigateTo('checkBox');
   }
 
   async navigateToRadioButton() {
-    await this.radioButtonMenuItem.click();
+    await this.navigateTo('radioButton');
   }
 
   async navigateToWebTables() {
-    await this.webTablesMenuItem.click();
+    await this.navigateTo('webTables');
   }
 
   async navigateToButtons() {
-    await this.buttonsMenuItem.click();
+    await this.navigateTo('buttons');
   }
 
   async navigateToLinks() {
-    await this.linksMenuItem.click();
+    await this.navigateTo('links');
   }
 
   async navigateToBrokenLinksImages() {
-    await this.brokenLinksImagesMenuItem.click();
+    await this.navigateTo('brokenLinksImages');
   }
 
   async navigateToUploadDownload() {
-    await this.uploadDownloadMenuItem.click();
+    await this.navigateTo('uploadDownload');
   }
 
   async navigateToDynamicProperties() {
-    await this.dynamicPropertiesMenuItem.click();
+    await this.navigateTo('dynamicProperties');
   }
 }

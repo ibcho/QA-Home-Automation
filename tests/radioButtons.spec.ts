@@ -18,6 +18,7 @@ test.describe('Radio Buttons Tests', () => {
         elementsPage = new ElementsPage(page);
         radioButtonsPage = new RadioButtonsPage(page);
 
+        // Navigate to the radio buttons page
         await homePage.navigateToHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToRadioButton();
@@ -27,17 +28,17 @@ test.describe('Radio Buttons Tests', () => {
         await context.close();
     });
 
-    test('is Radio button title is visible', async () => {
+    test('is Radio button title visible', async () => {
         expect(await radioButtonsPage.isRadioButtonsTitleVisible()).toBeTruthy();
     });
 
-    test('select "yes"', async () => {
+    test('select "yes" radio button', async () => {
         await radioButtonsPage.selectRadioButton('yes');
         expect(await radioButtonsPage.isRadioButtonSelected('yes')).toBeTruthy();
         expect(await radioButtonsPage.getSelectedRadioButtonText()).toBe('Yes');
     });
 
-    test('select "impressive"', async () => {
+    test('select "impressive" radio button', async () => {
         await radioButtonsPage.selectRadioButton('impressive');
         expect(await radioButtonsPage.isRadioButtonSelected('impressive')).toBeTruthy();
         expect(await radioButtonsPage.getSelectedRadioButtonText()).toBe('Impressive');

@@ -21,7 +21,7 @@ test.describe('Web Tables Tests', () => {
         await homePage.navigateToHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToWebTables();
-        await webTablesPage.isWebTablesTitleVisible();
+        expect(await webTablesPage.isWebTablesTitleVisible()).toBe(true);
         await webTablesPage.addButton.click();
     });
 

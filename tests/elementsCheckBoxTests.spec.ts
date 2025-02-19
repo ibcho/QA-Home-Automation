@@ -36,17 +36,17 @@ test.describe('Elements CheckBox Tests', () => {
     expect(await checkBoxPage.isCheckBoxUnchecked()).toBe(true);
   });
 
-  test('Collapse and shrink Home checkbox', async () => {
+  test('Expand and collapse Home checkbox', async () => {
     // Expand the checkbox tree
     await checkBoxPage.expandCheckBoxHome();
     expect(await checkBoxPage.isCheckBoxHomeExpanded()).toBe(true);
 
     // Collapse the checkbox tree
-    await checkBoxPage.closeCheckBoxHome();
+    await checkBoxPage.collapseCheckBoxHome();
     expect(await checkBoxPage.isCheckBoxHomeCollapsed()).toBe(true);
   });
 
-  test('validate selected elements after selecting Home checkbox', async () => {
+  test('Validate selected elements after selecting Home checkbox', async () => {
     await checkBoxPage.toggleCheckBox();
     const expectedElements = [
       'home', 'desktop', 'notes', 'commands', 'documents', 'workspace',
@@ -57,7 +57,7 @@ test.describe('Elements CheckBox Tests', () => {
     await checkBoxPage.toggleCheckBox();
   });
 
-  test('validate expand all and collapse all', async () => {
+  test('Validate expand all and collapse all', async () => {
     await checkBoxPage.expandAllCheckboxes();
     expect(await checkBoxPage.isExpandedDesktopNodeVisible()).toBe(true);
     expect(await checkBoxPage.isExpandedDocumentsNodeVisible()).toBe(true);

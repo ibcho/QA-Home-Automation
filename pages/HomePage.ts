@@ -4,53 +4,63 @@ export default class HomePage {
   readonly page: Page;
 
   readonly toolsqaLogo: Locator;
-  readonly elementsPage: Locator;
-  readonly formsPage: Locator;
-  readonly alertsFrameWindowsPage: Locator;
-  readonly widgetsPage: Locator;
-  readonly interactionsPage: Locator;
-  readonly bookStoreApplicationPage: Locator;
+  readonly menuItems: { [key: string]: Locator };
 
   constructor(page: Page) {
     this.page = page;
     this.toolsqaLogo = page.locator('a[href="https://demoqa.com"] img[src="/images/Toolsqa.jpg"]');
-    this.elementsPage = page.getByRole('heading', { name: 'Elements' })
-    this.formsPage = page.locator("//div[contains(text(),'Forms')]");
-    this.alertsFrameWindowsPage = page.locator("//div[contains(text(),'Alerts, Frame & Windows')]");
-    this.widgetsPage = page.locator("//div[contains(text(),'Widgets')]");
-    this.interactionsPage = page.locator("//div[contains(text(),'Interactions')]");
-    this.bookStoreApplicationPage = page.locator("//div[contains(text(),'Book Store Application')]");
+    this.menuItems = {
+      elements: page.getByRole('heading', { name: 'Elements' }),
+      forms: page.locator("//div[contains(text(),'Forms')]"),
+      alertsFrameWindows: page.locator("//div[contains(text(),'Alerts, Frame & Windows')]"),
+      widgets: page.locator("//div[contains(text(),'Widgets')]"),
+      interactions: page.locator("//div[contains(text(),'Interactions')]"),
+      bookStoreApplication: page.locator("//div[contains(text(),'Book Store Application')]"),
+    };
   }
 
+  // Navigation method
   async navigateToHomePage() {
     await this.page.goto("https://demoqa.com/");
   }
 
+  // Helper method to navigate to a menu item
+  async navigateTo(menuItem: string) {
+    const locator = this.menuItems[menuItem];
+    if (locator) {
+      await locator.click();
+    } else {
+      throw new Error(`Menu item ${menuItem} not found`);
+    }
+  }
+
+  // Specific navigation methods
   async gotoElements() {
-    await this.elementsPage.click();
+    await this.navigateTo('elements');
   }
 
   async gotoForms() {
-    await this.formsPage.click();
+    await this.navigateTo('forms');
   }
 
   async gotoAlertsFrameWindows() {
-    await this.alertsFrameWindowsPage.click();
+    await this.navigateTo('alertsFrameWindows');
   }
 
   async gotoWidgets() {
-    await this.widgetsPage.click();
+    await this.navigateTo('widgets');
   }
 
   async gotoInteractions() {
-    await this.interactionsPage.click();
+    await this.navigateTo('interactions');
   }
 
   async gotoBookStoreApplication() {
-    await this.bookStoreApplicationPage.click();
+    await this.navigateTo('bookStoreApplication');
   }
 
-  async isToolsQALogoVisible(): Promise<boolean>{
+  // Visibility check method
+  async isToolsQALogoVisible(): Promise<boolean> {
     return await this.toolsqaLogo.isVisible();
   }
 }

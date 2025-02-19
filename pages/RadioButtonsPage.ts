@@ -1,6 +1,5 @@
 import { Locator, Page } from "@playwright/test";
 
-// filepath: /c:/Users/IbrahimGavazov/Projects/QA-Home-Automation/pages/RadioButtonsPage.ts
 export default class RadioButtonsPage {
     readonly page: Page;
 
@@ -19,56 +18,71 @@ export default class RadioButtonsPage {
         this.selectedRadioButtonText = page.locator('p.mt-3 > span.text-success');
     }
 
+    // Visibility check method
     async isRadioButtonsTitleVisible(): Promise<boolean> {
         return await this.radioButtonsTitle.isVisible();
     }
 
+    // Method to select a radio button
     async selectRadioButton(value: string) {
-        switch (value.toLowerCase()) {
-            case 'yes':
-                await this.yesRadioButtonLabel.click();
-                break;
-            case 'impressive':
-                await this.impressiveRadioButtonLabel.click();
-                break;
-            case 'no':
-                if (await this.noRadioButtonLabel.isDisabled()) {
-                    throw new Error('The "No" radio button is disabled');
-                }
-                await this.noRadioButtonLabel.click();
-                break;
-            default:
-                throw new Error('Invalid radio button value');
+        const radioButtonLabel = this.getRadioButtonLabel(value);
+        if (radioButtonLabel) {
+            await radioButtonLabel.click();
+        } else {
+            throw new Error(`Invalid radio button value: ${value}`);
         }
     }
 
+    // Method to check if a radio button is selected
     async isRadioButtonSelected(value: string): Promise<boolean> {
-        switch (value.toLowerCase()) {
-            case 'yes':
-                return await this.page.locator('input#yesRadio').isChecked();
-            case 'impressive':
-                return await this.page.locator('input#impressiveRadio').isChecked();
-            case 'no':
-                return await this.page.locator('input#noRadio').isChecked();
-            default:
-                throw new Error('Invalid radio button value lable');
+        const radioButton = this.getRadioButton(value);
+        if (radioButton) {
+            return await radioButton.isChecked();
+        } else {
+            throw new Error(`Invalid radio button value: ${value}`);
         }
     }
 
+    // Method to check if a radio button is disabled
     async isRadioButtonDisabled(value: string): Promise<boolean> {
-        switch (value.toLowerCase()) {
-            case 'yes':
-                return await this.page.locator('input#yesRadio').isDisabled();
-            case 'impressive':
-                return await this.page.locator('input#impressiveRadio').isDisabled();
-            case 'no':
-                return await this.page.locator('input#noRadio').isDisabled();
-            default:
-                throw new Error('Invalid radio button value');
+        const radioButton = this.getRadioButton(value);
+        if (radioButton) {
+            return await radioButton.isDisabled();
+        } else {
+            throw new Error(`Invalid radio button value: ${value}`);
         }
     }
-    
+
+    // Method to get the text of the selected radio button
     async getSelectedRadioButtonText(): Promise<string> {
         return await this.selectedRadioButtonText.innerText();
+    }
+
+    // Helper method to get the radio button label locator
+    private getRadioButtonLabel(value: string): Locator | null {
+        switch (value.toLowerCase()) {
+            case 'yes':
+                return this.yesRadioButtonLabel;
+            case 'impressive':
+                return this.impressiveRadioButtonLabel;
+            case 'no':
+                return this.noRadioButtonLabel;
+            default:
+                return null;
+        }
+    }
+
+    // Helper method to get the radio button input locator
+    private getRadioButton(value: string): Locator | null {
+        switch (value.toLowerCase()) {
+            case 'yes':
+                return this.page.locator('input#yesRadio');
+            case 'impressive':
+                return this.page.locator('input#impressiveRadio');
+            case 'no':
+                return this.page.locator('input#noRadio');
+            default:
+                return null;
+        }
     }
 }

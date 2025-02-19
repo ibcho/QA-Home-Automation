@@ -5,44 +5,49 @@ export default class ElementsTextBoxPage extends ElementsPage {
   readonly page: Page;
   readonly textBoxHeader: Locator;
   readonly textBoxMenuItem: Locator;
-  readonly fullName : Locator;
-  readonly email : Locator;
-  readonly currentAddress : Locator;
-  readonly permanentAddress : Locator;
-  readonly submit : Locator;
+  readonly fullName: Locator;
+  readonly email: Locator;
+  readonly currentAddress: Locator;
+  readonly permanentAddress: Locator;
+  readonly submit: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.page = page
+    this.page = page;
     this.textBoxHeader = page.locator('h1.text-center', { hasText: 'Text Box' });
     this.textBoxMenuItem = page.locator('li.btn.btn-light', { hasText: 'Text Box' });
-    this.fullName = page.locator('input[placeholder="Full Name"]')
-    this.email = page.locator('input[type="email"]')
-    this.currentAddress = page.locator('textarea[placeholder="Current Address"][rows="5"]')
-    this.permanentAddress = page.locator("#permanentAddress")
-    this.submit = page.locator("#submit")
+    this.fullName = page.locator('input[placeholder="Full Name"]');
+    this.email = page.locator('input[type="email"]');
+    this.currentAddress = page.locator('textarea[placeholder="Current Address"][rows="5"]');
+    this.permanentAddress = page.locator("#permanentAddress");
+    this.submit = page.locator("#submit");
   }
 
-  async selectTextBox(){
-    await this.textBoxMenuItem.click()
+  // Navigation method
+  async selectTextBox() {
+    await this.textBoxMenuItem.click();
   }
 
+  // Visibility check method
   async isTextBoxHeaderVisible(): Promise<boolean> {
     return await this.textBoxHeader.isVisible();
   }
 
-  async fillAllTextBoxFormPage(fullName: string, email: string, currentAddress: string, permanentAddress: string){
-    await this.fullName.fill(fullName)
-    await this.email.fill(email)
-    await this.currentAddress.fill(currentAddress)
-    await this.permanentAddress.fill(permanentAddress)
+  // Form filling method
+  async fillAllTextBoxFormPage(fullName: string, email: string, currentAddress: string, permanentAddress: string) {
+    await this.fullName.fill(fullName);
+    await this.email.fill(email);
+    await this.currentAddress.fill(currentAddress);
+    await this.permanentAddress.fill(permanentAddress);
   }
 
-  async submitForm(){
-    await this.submit.click()
+  // Form submission method
+  async submitForm() {
+    await this.submit.click();
   }
 
-  async expectFormSubmissionResults(fullName: string, email: string, currentAddress: string, permanentAddress: string){
+  // Form submission result validation method
+  async expectFormSubmissionResults(fullName: string, email: string, currentAddress: string, permanentAddress: string) {
     const nameResult = this.page.locator('#name');
     const emailResult = this.page.locator('#email');
     const currentAddressResult = this.page.locator('#currentAddress').nth(1);
@@ -57,5 +62,4 @@ export default class ElementsTextBoxPage extends ElementsPage {
     await expect(permanentAddressResult).toBeVisible();
     await expect(permanentAddressResult).toHaveText(`Permananet Address :${permanentAddress}`);
   }
-  
 }
