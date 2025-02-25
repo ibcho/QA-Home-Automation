@@ -58,7 +58,7 @@ export default class RadioButtonsPage {
         return await this.selectedRadioButtonText.innerText();
     }
 
-    // Helper method to get the radio button label locator
+    // Helper method to get the radio button label locator when it is selected
     private getRadioButtonLabel(value: string): Locator | null {
         switch (value.toLowerCase()) {
             case 'yes':

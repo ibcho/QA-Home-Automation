@@ -132,4 +132,74 @@ export default class WebTablesPage {
         const agePattern = '\\d*';
         await expect(this.ageField).toHaveAttribute('pattern', agePattern);
     }
+
+    // Search for a person
+    async searchForPerson(firstName: string): Promise<void> {
+        await this.searchInput.fill(firstName);
+    }
+
+    // Verify that person is visible 
+    async verifyPersonIsVisible(firstName: string): Promise<void> {
+        const newPersonRow = this.page.locator('div.rt-tr-group', { hasText: firstName });
+        await expect(newPersonRow).toBeVisible();
+        await expect(newPersonRow).toContainText(firstName);
+    }
+
+
+    // Method to create user with valid data and verify that the user is created
+    async createNewPersonAndVerify(firstName: string, lastName: string, email: string, age: string, salary: string, department: string): Promise<void> {
+        await this.fillRegistrationForm(firstName, lastName, email, age, salary, department);
+        await this.submitForm();
+    
+        const newPersonRow = this.page.locator('div.rt-tr-group', { hasText: firstName });
+        await expect(newPersonRow).toBeVisible();
+        await expect(newPersonRow).toContainText(firstName);
+        await expect(newPersonRow).toContainText(lastName);
+        await expect(newPersonRow).toContainText(email);
+        await expect(newPersonRow).toContainText(age);
+        await expect(newPersonRow).toContainText(salary);
+        await expect(newPersonRow).toContainText(department);
+    }
+
+    // Method to delete a person and verify that the person is deleted
+    async deletePersonAndVerify(firstName: string): Promise<void> {
+        const personRow = this.page.locator('div.rt-tr-group', { hasText: firstName });
+        const deleteButton = personRow.locator('span[id^="delete-record-"]');
+        await deleteButton.click();
+        await expect(personRow).toBeHidden();
+    }
+
+    // Edit person and verify the changes
+    async editPersonAndVerifyTheChanges(oldFirstName: string, newFirstName: string, newLastName: string, newEmail: string, newAge: string, newSalary: string, newDepartment: string): Promise<void> {
+        const personRow = this.page.locator('div.rt-tr-group', { hasText: oldFirstName });
+        const editButton = personRow.locator('span[id^="edit-record-"]');
+        await editButton.click();
+    
+        // Fill in the new details
+        await this.firstNameField.fill(newFirstName);
+        await this.lastNameField.fill(newLastName);
+        await this.emailField.fill(newEmail);
+        await this.ageField.fill(newAge);
+        await this.salaryField.fill(newSalary);
+        await this.departmentField.fill(newDepartment);
+    
+        // Submit the form
+        await this.submitForm();
+
+        // Verify the changes
+        const updatedPersonRow = this.page.locator('div.rt-tr-group', { hasText: newFirstName });
+        await expect(updatedPersonRow).toBeVisible();
+        await expect(updatedPersonRow).toContainText(newFirstName);
+        await expect(updatedPersonRow).toContainText(newLastName);
+        await expect(updatedPersonRow).toContainText(newEmail);
+        await expect(updatedPersonRow).toContainText(newAge);
+        await expect(updatedPersonRow).toContainText(newSalary);
+        await expect(updatedPersonRow).toContainText(newDepartment);
+
+    }
+
+    // Method to submit the form
+    async submitForm(): Promise<void> {
+        await this.submitButton.click();
+    }
 }
