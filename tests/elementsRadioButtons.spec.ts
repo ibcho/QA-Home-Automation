@@ -1,5 +1,5 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
-import RadioButtonsPage from '../pages/RadioButtonsPage';
+import RadioButtonsPage from '../pages/ElementsRadioButtonsPage';
 import ElementsPage from '../pages/ElementsPage';
 import HomePage from '../pages/HomePage';
 

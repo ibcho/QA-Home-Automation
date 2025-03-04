@@ -1,5 +1,5 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
-import WebTablesPage from '../pages/WebTablesPage';
+import WebTablesPage from '../pages/ElementsWebTablesPage';
 import HomePage from '../pages/HomePage';
 import ElementsPage from '../pages/ElementsPage';
 

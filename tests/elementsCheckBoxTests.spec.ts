@@ -1,6 +1,6 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
+import CheckBoxPage from '../pages/ElementsCheckBoxPage';
 import HomePage from '../pages/HomePage';
-import CheckBoxPage from '../pages/CheckBoxPage';
 import ElementsPage from '../pages/ElementsPage';
 
 test.describe('Elements CheckBox Tests', () => {
