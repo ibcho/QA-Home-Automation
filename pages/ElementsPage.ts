@@ -13,7 +13,7 @@ export default class ElementsPage {
       radioButton: page.locator('li.btn.btn-light', { hasText: 'Radio Button' }),
       webTables: page.locator('li.btn.btn-light', { hasText: 'Web Tables' }),
       buttons: page.locator('li.btn.btn-light', { hasText: 'Buttons' }),
-      links: page.locator('li.btn.btn-light', { hasText: 'Links' }),
+      links: page.locator('li.btn.btn-light', { hasText: /^Links$/ }), // Updated locator for "Links"
       brokenLinksImages: page.locator('li.btn.btn-light', { hasText: 'Broken Links - Images' }),
       uploadDownload: page.locator('li.btn.btn-light', { hasText: 'Upload and Download' }),
       dynamicProperties: page.locator('li.btn.btn-light', { hasText: 'Dynamic Properties' }),
