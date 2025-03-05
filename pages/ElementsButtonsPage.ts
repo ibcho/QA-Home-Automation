@@ -16,9 +16,9 @@ export default class Buttons {
     constructor(page: Page) {
         this.page = page;
 
-        this.doubleClick = page.locator('#doubleClickBtn')
-        this.rightClick = page.locator('#rightClickBtn')
-        this.clickMe = page.locator('button', { hasText: 'Click Me' });
+        this.doubleClick = page.locator('#doubleClickBtn');
+        this.rightClick = page.locator('#rightClickBtn');
+        this.clickMe = page.locator('button', { hasText: 'Click Me' }).nth(2)
 
         this.doubleClickMessage = page.locator('#doubleClickMessage')
         this.rightClickMessage = page.locator('#rightClickMessage')
