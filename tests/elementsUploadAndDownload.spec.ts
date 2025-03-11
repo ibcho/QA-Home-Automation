@@ -29,7 +29,7 @@ test.afterAll(async () => {
 
 test.describe('Upload and Download tests', () => {
     test('upload a file and verify', async () => {
-        const filePath = path.resolve(__dirname, '../resources/Apartament.png');
+        const filePath = path.resolve(__dirname, 'C:/Users/IbrahimGavazov/Apartament.png');
         await elementsUploadDownloadPage.uploadFile(filePath);
         await elementsUploadDownloadPage.verifyUploadedFile('Apartament.png');
     });
