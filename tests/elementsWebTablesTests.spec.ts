@@ -77,6 +77,10 @@ test.describe('Create and Delete Person Tests', () => {
         expect(await webTablesPage.isWebTablesTitleVisible()).toBe(true);
     });
 
+    test.afterAll(async () => {
+        await context.close();
+    });
+
     test('create new person and verify', async () => {
         await webTablesPage.addButton.click();
         const firstName = 'John';
@@ -130,6 +134,10 @@ test.describe('Web Table Search Tests', () => {
         await homePage.gotoElements();
         await elementsPage.navigateToWebTables();
         expect(await webTablesPage.isWebTablesTitleVisible()).toBe(true);
+    });
+
+    test.afterAll(async () => {
+        await context.close();
     });
 
     test('Search for a person and Verify that it is visible', async () => {
