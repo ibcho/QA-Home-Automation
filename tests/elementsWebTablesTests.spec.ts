@@ -25,9 +25,9 @@ test.describe('Add button / Registration form tests', () => {
         await webTablesPage.addButton.click();
     });
 
-    // test.afterAll(async () => {
-    //     await context.close();
-    // });
+    test.afterAll(async () => {
+        await context.close();
+    });
 
     test('verify form labels', async () => {
         await webTablesPage.verifyRegistrationFormLabels();
