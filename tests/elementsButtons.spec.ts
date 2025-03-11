@@ -1,8 +1,8 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
 import WebTablesPage from '../pages/ElementsWebTablesPage';
-import HomePage from '../pages/homePage';
 import ElementsPage from '../pages/ElementsPage';
 import ButtonsPage from '../pages/ElementsButtonsPage';
+import HomePage from '../pages/HomePage';
 
 let webTablesPage: WebTablesPage;
 let homePage: HomePage;

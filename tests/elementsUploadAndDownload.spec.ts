@@ -1,6 +1,6 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
 import ElementsUploadAndDownloadPage from '../pages/ElementsUploadAndDownload';
-import HomePage from '../pages/homePage';
+import HomePage from '../pages/HomePage';
 import ElementsPage from '../pages/ElementsPage';
 import * as path from 'path';
 
