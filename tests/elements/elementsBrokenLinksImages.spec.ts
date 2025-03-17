@@ -1,7 +1,7 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
 import ElementsBrokenLinksImages from '../../pages/Elements/ElementsBrokenLinksImages';
 import ElementsPage from '../../pages/Elements/ElementsPage';
-import HomePage from '../../pages/homePage';
+import HomePage from '../../pages/HomePage';
 
 let elementsBrokenLinksImages: ElementsBrokenLinksImages;
 let homePage: HomePage;

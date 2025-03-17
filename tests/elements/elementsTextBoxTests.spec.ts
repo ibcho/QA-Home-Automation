@@ -1,20 +1,26 @@
 import { test, expect } from '@playwright/test';
 import ElementsTextBoxPage from '../../pages/Elements/ElementsTextBoxPage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
-import HomePage from '../../pages/homePage';
+import HomePage from '../../pages/HomePage';
 
 test.describe('Elements TextBox Tests', () => {
   let homePage: HomePage;
   let elementsTextBoxPage: ElementsTextBoxPage;
+  let elementsPage: ElementsPage;
 
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
     elementsTextBoxPage = new ElementsTextBoxPage(page);
+    elementsPage = new ElementsPage(page);
 
     // Navigate to the home page
     await homePage.navigateToHomePage();
     // Navigate to the elements page
     await homePage.gotoElements();
+
+    //go to elements
+    await elementsPage.navigateToTextBox();
+    
     // Select the text box menu item
     await elementsTextBoxPage.selectTextBox();
     expect(await elementsTextBoxPage.isTextBoxHeaderVisible()).toBe(true);

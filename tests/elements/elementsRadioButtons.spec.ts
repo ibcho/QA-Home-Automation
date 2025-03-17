@@ -1,7 +1,7 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
 import ElementsRadioButtonsPage from '../../pages/Elements/ElementsRadioButtonsPage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
-import HomePage from '../../pages/homePage';
+import HomePage from '../../pages/HomePage';
 
 test.describe('Radio Buttons Tests', () => {
     let radioButtonsPage: ElementsRadioButtonsPage;

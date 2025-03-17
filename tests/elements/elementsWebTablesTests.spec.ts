@@ -1,6 +1,6 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
 import WebTablesPage from '../../pages/Elements/ElementsWebTablesPage';
-import HomePage from '../../pages/homePage';
+import HomePage from '../../pages/HomePage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
 
 test.describe('Add button / Registration form tests', () => {
