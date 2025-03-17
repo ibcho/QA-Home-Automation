@@ -1,7 +1,7 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
-import ElementsDynamicProperties from '../pages/ElementsDynamicProperties';
-import HomePage from '../pages/HomePage';
-import ElementsPage from '../pages/ElementsPage';
+import ElementsDynamicProperties from '../../pages/Elements/ElementsDynamicProperties';
+import HomePage from '../../pages/homePage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
 
 let elementsDynamicProperties: ElementsDynamicProperties;
 let homePage: HomePage;

@@ -1,10 +1,10 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
-import RadioButtonsPage from '../pages/ElementsRadioButtonsPage';
-import ElementsPage from '../pages/ElementsPage';
-import HomePage from '../pages/HomePage';
+import ElementsRadioButtonsPage from '../../pages/Elements/ElementsRadioButtonsPage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
+import HomePage from '../../pages/homePage';
 
 test.describe('Radio Buttons Tests', () => {
-    let radioButtonsPage: RadioButtonsPage;
+    let radioButtonsPage: ElementsRadioButtonsPage;
     let homePage: HomePage;
     let elementsPage: ElementsPage;
     let context: BrowserContext;
@@ -16,7 +16,7 @@ test.describe('Radio Buttons Tests', () => {
 
         homePage = new HomePage(page);
         elementsPage = new ElementsPage(page);
-        radioButtonsPage = new RadioButtonsPage(page);
+        radioButtonsPage = new ElementsRadioButtonsPage(page);
 
         // Navigate to the radio buttons page
         await homePage.navigateToHomePage();

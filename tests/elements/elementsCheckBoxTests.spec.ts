@@ -1,7 +1,7 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
-import CheckBoxPage from '../pages/ElementsCheckBoxPage';
-import HomePage from '../pages/HomePage';
-import ElementsPage from '../pages/ElementsPage';
+import CheckBoxPage from '../../pages/Elements/ElementsCheckBoxPage';
+import HomePage from '../../pages/homePage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
 
 test.describe('Elements CheckBox Tests', () => {
   let homePage: HomePage;

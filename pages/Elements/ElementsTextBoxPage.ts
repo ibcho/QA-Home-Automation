@@ -1,7 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
-import ElementsPage from '../pages/ElementsPage';
 
-export default class ElementsTextBoxPage extends ElementsPage {
+export default class ElementsTextBoxPage {
   readonly page: Page;
   readonly textBoxHeader: Locator;
   readonly textBoxMenuItem: Locator;
@@ -12,7 +11,6 @@ export default class ElementsTextBoxPage extends ElementsPage {
   readonly submit: Locator;
 
   constructor(page: Page) {
-    super(page);
     this.page = page;
     this.textBoxHeader = page.locator('h1.text-center', { hasText: 'Text Box' });
     this.textBoxMenuItem = page.locator('li.btn.btn-light', { hasText: 'Text Box' });

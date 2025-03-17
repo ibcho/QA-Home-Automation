@@ -1,7 +1,7 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
-import WebTablesPage from '../pages/ElementsWebTablesPage';
-import HomePage from '../pages/HomePage';
-import ElementsPage from '../pages/ElementsPage';
+import WebTablesPage from '../../pages/Elements/ElementsWebTablesPage';
+import HomePage from '../../pages/homePage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
 
 test.describe('Add button / Registration form tests', () => {
     let webTablesPage: WebTablesPage;

@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 
-export default class RadioButtonsPage {
+export default class ElementsRadioButtonsPage {
     readonly page: Page;
 
     readonly radioButtonsTitle: Locator;

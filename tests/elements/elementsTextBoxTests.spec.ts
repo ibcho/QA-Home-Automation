@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
-import HomePage from '../pages/HomePage';
-import ElementsTextBoxPage from '../pages/ElementsTextBoxPage';
+import ElementsTextBoxPage from '../../pages/Elements/ElementsTextBoxPage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
+import HomePage from '../../pages/homePage';
 
 test.describe('Elements TextBox Tests', () => {
   let homePage: HomePage;
@@ -18,6 +19,10 @@ test.describe('Elements TextBox Tests', () => {
     await elementsTextBoxPage.selectTextBox();
     expect(await elementsTextBoxPage.isTextBoxHeaderVisible()).toBe(true);
   });
+
+  test.afterAll(async ({ context }) => {
+    await context.close(); // Close the browser context
+});
   
 
   test('Fill all textbox fields in Elements page and submit', async () => {
