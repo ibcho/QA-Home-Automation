@@ -39,15 +39,21 @@ test.describe('Broken Links & Images tests', () => {
         await elementsBrokenLinksImages.clickValidLinkAndVerify();
     });
 
-    test.describe('redirect to broken link', () => {
-        test.beforeEach(async () => {
-            await homePage.navigateToHomePage();
-            await homePage.gotoElements();
-            await elementsPage.navigateToBrokenLinksImages();
-        });
+test.describe('redirect to broken link', () => {
+    test.beforeEach(async () => {
+        await homePage.navigateToHomePage();
+        await homePage.gotoElements();
+        await elementsPage.navigateToBrokenLinksImages();
+    });
 
-        test('verify broken link redirects to correct URL', async () => {
-            await elementsBrokenLinksImages.clickBrokenLinkAndVerify();
-        });
+    test('verify broken link redirects to correct URL and displays correct content', async () => {
+        await elementsBrokenLinksImages.clickBrokenLink();
+        await expect(page).toHaveURL('http://the-internet.herokuapp.com/status_codes/500');
+
+        const statusCodeDiv = page.locator('.example');
+        await expect(statusCodeDiv).toContainText('This page returned a 500 status code.');
+        await expect(statusCodeDiv).toContainText('For a definition and common list of HTTP status codes, go');
+    });
+
     });
 });

@@ -36,8 +36,7 @@ export default class ElementsBrokenLinksImages {
     }
 
     // Method to click the broken link and verify the URL
-    async clickBrokenLinkAndVerify() {
+    async clickBrokenLink() {
         await this.brokenLink.click();
-        await expect(this.page).toHaveURL('http://the-internet.herokuapp.com/status_codes/500');
     }
 }

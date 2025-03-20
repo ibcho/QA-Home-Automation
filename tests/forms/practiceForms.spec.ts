@@ -5,7 +5,7 @@ import path from 'path';
 
 let practiceFormPage: PracticeFormPage;
 let homePage: HomePage;
-test.setTimeout(60000); 
+
 test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
     practiceFormPage = new PracticeFormPage(page);
@@ -47,8 +47,7 @@ test.describe('Practice Form Tests', () => {
         await practiceFormPage.selectHobbies(['hobbies-checkbox-1', 'hobbies-checkbox-2']); // Replace with actual IDs or labels
 
         // Upload picture
-        const picturePath = path.join(__dirname, 'C:/Users/IbrahimGavazov/Projects/11.jpg');
-      //  const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // path to the picture
+        const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // path to the picture
         await practiceFormPage.uploadPicture(picturePath);
 
         // Fill current address
