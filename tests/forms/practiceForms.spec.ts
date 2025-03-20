@@ -50,7 +50,7 @@ test.describe('Practice Form Tests', () => {
         // const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // path to the picture
         // await practiceFormPage.uploadPicture(picturePath);
 
-        const picturePath = path.resolve(__dirname, 'C:/Users/IbrahimGavazov/Projects/QA-Home-Automation/pages/11.jpg');
+        const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
         await practiceFormPage.uploadPicture(picturePath);
 
         // Fill current address
