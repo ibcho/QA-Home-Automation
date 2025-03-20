@@ -85,7 +85,7 @@ test.describe('Practice Form Tests', () => {
         await practiceFormPage.selectHobbies(['hobbies-checkbox-3']); // Replace with actual IDs or labels
 
         // Upload picture
-        const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // Replace with the actual path to the picture
+        const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
         await practiceFormPage.uploadPicture(picturePath);
 
         // Fill current address
