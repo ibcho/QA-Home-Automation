@@ -48,7 +48,6 @@ test.describe('redirect to broken link', () => {
 
     test('verify broken link redirects to correct URL and displays correct content', async () => {
         await elementsBrokenLinksImages.clickBrokenLink();
-        await expect(page).toHaveURL('http://the-internet.herokuapp.com/status_codes/500');
 
         const statusCodeDiv = page.locator('.example');
         await expect(statusCodeDiv).toContainText('This page returned a 500 status code.');

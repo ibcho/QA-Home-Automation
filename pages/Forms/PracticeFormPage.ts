@@ -90,6 +90,7 @@ export default class PracticeFormPage {
     async selectHobbies(hobbies: string[]) {
         for (const hobby of hobbies) {
             const hobbyLocator = this.page.locator(`.custom-checkbox label[for="${hobby}"]`);
+            await hobbyLocator.waitFor({ state: 'visible' });
             await hobbyLocator.click({ force: true });
         }
     }
