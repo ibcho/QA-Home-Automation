@@ -1,14 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium, Browser, Page } from '@playwright/test';
 import ElementsTextBoxPage from '../../pages/Elements/ElementsTextBoxPage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
 import HomePage from '../../pages/HomePage';
 
-test.describe('Elements TextBox Tests', () => {
-  let homePage: HomePage;
-  let elementsTextBoxPage: ElementsTextBoxPage;
-  let elementsPage: ElementsPage;
+let browser: Browser;
+let page: Page;
+let homePage: HomePage;
+let elementsTextBoxPage: ElementsTextBoxPage;
+let elementsPage: ElementsPage;
 
-  test.beforeEach(async ({ page }) => {
+test.describe('Elements TextBox Tests', () => {
+  test.beforeEach(async () => {
+    browser = await chromium.launch();
+    const context = await browser.newContext();
+    page = await context.newPage();
+
     homePage = new HomePage(page);
     elementsTextBoxPage = new ElementsTextBoxPage(page);
     elementsPage = new ElementsPage(page);
@@ -18,7 +24,7 @@ test.describe('Elements TextBox Tests', () => {
     // Navigate to the elements page
     await homePage.gotoElements();
 
-    //go to elements
+    // Go to elements
     await elementsPage.navigateToTextBox();
     
     // Select the text box menu item
@@ -26,10 +32,10 @@ test.describe('Elements TextBox Tests', () => {
     expect(await elementsTextBoxPage.isTextBoxHeaderVisible()).toBe(true);
   });
 
-  test.afterAll(async ({ context }) => {
-    await context.close(); // Close the browser context
-});
-  
+  test.afterEach(async () => {
+    await page.close();
+    await browser.close();
+  });
 
   test('Fill all textbox fields in Elements page and submit', async () => {
     // Enter fields info

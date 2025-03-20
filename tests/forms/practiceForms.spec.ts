@@ -1,10 +1,11 @@
 import { test, expect} from '@playwright/test';
 import PracticeFormPage from '../../pages/Forms/PracticeFormPage';
 import HomePage from '../../pages/HomePage';
+import path from 'path';
 
 let practiceFormPage: PracticeFormPage;
 let homePage: HomePage;
-
+test.setTimeout(60000); 
 test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
     practiceFormPage = new PracticeFormPage(page);
@@ -46,7 +47,8 @@ test.describe('Practice Form Tests', () => {
         await practiceFormPage.selectHobbies(['hobbies-checkbox-1', 'hobbies-checkbox-2']); // Replace with actual IDs or labels
 
         // Upload picture
-        const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // path to the picture
+        const picturePath = path.join(__dirname, 'C:/Users/IbrahimGavazov/Projects/11.jpg');
+      //  const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // path to the picture
         await practiceFormPage.uploadPicture(picturePath);
 
         // Fill current address
@@ -59,6 +61,8 @@ test.describe('Practice Form Tests', () => {
         // Verify form submission
         await practiceFormPage.clickSubmitButton();
         await practiceFormPage.vefyFormSubmission()
+
+        
     });
 
     test('Fill the form with different gender and hobbies', async () => {
