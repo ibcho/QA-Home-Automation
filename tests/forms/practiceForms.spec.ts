@@ -46,10 +46,6 @@ test.describe('Practice Form Tests', () => {
         await practiceFormPage.fillSubjects('Maths');
         await practiceFormPage.selectHobbies(['hobbies-checkbox-1', 'hobbies-checkbox-2']); // Replace with actual IDs or labels
 
-        // Upload picture
-        // const picturePath = 'C:/Users/IbrahimGavazov/Projects/11.jpg'; // path to the picture
-        // await practiceFormPage.uploadPicture(picturePath);
-
         const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
         await practiceFormPage.uploadPicture(picturePath);
 

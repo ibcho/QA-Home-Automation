@@ -19,6 +19,8 @@ export default class PracticeFormPage {
     readonly city: Locator;
     readonly submitButton: Locator;
 
+    readonly cityDropdown: Locator;
+
     constructor(page: Page) {
         this.page = page;
         this.firstName = page.locator('#firstName');
@@ -35,8 +37,12 @@ export default class PracticeFormPage {
         this.hobbies = page.locator('.custom-checkbox');
         this.picture = page.locator('#uploadPicture');
         this.currentAddress = page.locator('#currentAddress');
-        this.state = page.locator('#state');
-        this.city = page.locator('#city');
+        this.state = page.locator('div').filter({ hasText: /^Select State$/ }).nth(3)
+        this.city = page.locator('div').filter({ hasText: /^Select City$/ }).nth(3)
+  
+
+        //this.state = page.locator('#state');
+        //this.city = page.locator('#city');
         this.submitButton = page.locator('#submit');
     }
 
@@ -102,15 +108,15 @@ export default class PracticeFormPage {
     async fillCurrentAddress(currentAddress: string) {
         await this.currentAddress.fill(currentAddress);
     }
-
+    
     async selectState(state: string) {
-        await this.state.click()
+        await this.state.click();
         const stateOption = this.page.getByText(`${state}`, { exact: true });
         await stateOption.click();
     }
 
     async selectCity(city: string) {
-        await this.city.click();
+        await this.city.click({ force: true });
         const cityOption = this.page.getByText(`${city}`, { exact: true });
         await cityOption.click();
     }
