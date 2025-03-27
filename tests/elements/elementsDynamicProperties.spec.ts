@@ -17,7 +17,7 @@ test.beforeAll(async ({ browser }) => {
     elementsPage = new ElementsPage(page);
     elementsDynamicProperties = new ElementsDynamicProperties(page);
 
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToDynamicProperties();
 });

@@ -17,7 +17,7 @@ test.beforeAll(async ({ browser }) => {
     elementsPage = new ElementsPage(page);
     elementsLinksPage = new ElementsLinksPage(page);
 
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToLinks();
 });

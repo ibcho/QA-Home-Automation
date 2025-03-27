@@ -38,7 +38,11 @@ export default defineConfig({
       name: 'chromium',
       use: { 
         ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 }, // Set the viewport size to full HD resolution
+        viewport: null, // Disable fixed viewport
+        deviceScaleFactor: undefined, // Explicitly unset deviceScaleFactor
+        launchOptions: {
+          args: ['--start-maximized'],
+        },
       },
     },
 

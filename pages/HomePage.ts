@@ -9,14 +9,15 @@ export default class HomePage {
       this.menuItems = {
           elements: page.getByRole('heading', { name: 'Elements' }),
           forms: page.locator("//div[@class='card mt-4 top-card']//h5[text()='Forms']"),
-          alertsFrameWindows: page.locator("//div[contains(text(),'Alerts, Frame & Windows')]"),
+          alertsFrameWindows: page.locator('div').filter({ hasText: /^Alerts, Frame & Windows$/ }).nth(1),
+          
           widgets: page.locator("//div[contains(text(),'Widgets')]"),
           interactions: page.locator("//div[contains(text(),'Interactions')]"),
           bookStoreApplication: page.locator("//div[contains(text(),'Book Store Application')]"),
       };
   }
 
-  async navigateToHomePage() {
+  async loadHomePage() {
       await this.page.goto("https://demoqa.com/");
   }
 

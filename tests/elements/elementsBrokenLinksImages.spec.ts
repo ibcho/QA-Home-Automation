@@ -17,7 +17,7 @@ test.beforeAll(async ({ browser }) => {
     elementsPage = new ElementsPage(page);
     elementsBrokenLinksImages = new ElementsBrokenLinksImages(page);
 
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToBrokenLinksImages();
 });
@@ -41,7 +41,7 @@ test.describe('Broken Links & Images tests', () => {
 
 test.describe('redirect to broken link', () => {
     test.beforeEach(async () => {
-        await homePage.navigateToHomePage();
+        await homePage.loadHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToBrokenLinksImages();
     });

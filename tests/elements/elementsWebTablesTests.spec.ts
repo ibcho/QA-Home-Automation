@@ -18,7 +18,7 @@ test.describe('Add button / Registration form tests', () => {
         elementsPage = new ElementsPage(page);
         webTablesPage = new WebTablesPage(page);
 
-        await homePage.navigateToHomePage();
+        await homePage.loadHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToWebTables();
         expect(await webTablesPage.isWebTablesTitleVisible()).toBe(true);
@@ -71,7 +71,7 @@ test.describe('Create and Delete Person Tests', () => {
         elementsPage = new ElementsPage(page);
         webTablesPage = new WebTablesPage(page);
 
-        await homePage.navigateToHomePage();
+        await homePage.loadHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToWebTables();
         expect(await webTablesPage.isWebTablesTitleVisible()).toBe(true);
@@ -130,7 +130,7 @@ test.describe('Web Table Search Tests', () => {
         elementsPage = new ElementsPage(page);
         webTablesPage = new WebTablesPage(page);
 
-        await homePage.navigateToHomePage();
+        await homePage.loadHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToWebTables();
         expect(await webTablesPage.isWebTablesTitleVisible()).toBe(true);

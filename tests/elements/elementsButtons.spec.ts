@@ -20,7 +20,7 @@ test.beforeAll(async ({ browser }) => {
     webTablesPage = new WebTablesPage(page);
     buttonsPage = new ButtonsPage(page);
 
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToButtons();
 });

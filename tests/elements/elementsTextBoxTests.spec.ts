@@ -20,7 +20,7 @@ test.describe('Elements TextBox Tests', () => {
     elementsPage = new ElementsPage(page);
 
     // Navigate to the home page
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
     // Navigate to the elements page
     await homePage.gotoElements();
 

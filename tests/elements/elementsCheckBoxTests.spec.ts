@@ -18,7 +18,7 @@ test.describe('Elements CheckBox Tests', () => {
     checkBoxPage = new CheckBoxPage(page);
     elementsPage = new ElementsPage(page);
 
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToCheckBox();
     await checkBoxPage.isCheckBoxTitleVisible();

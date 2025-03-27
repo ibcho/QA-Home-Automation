@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
     practiceFormPage = new PracticeFormPage(page);
 
     // Navigate to the home page
-    await homePage.navigateToHomePage();
+    await homePage.loadHomePage();
 
     // Navigate to the Forms section
     await homePage.gotoForms();

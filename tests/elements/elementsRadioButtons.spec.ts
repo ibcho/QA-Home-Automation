@@ -19,7 +19,7 @@ test.describe('Radio Buttons Tests', () => {
         radioButtonsPage = new ElementsRadioButtonsPage(page);
 
         // Navigate to the radio buttons page
-        await homePage.navigateToHomePage();
+        await homePage.loadHomePage();
         await homePage.gotoElements();
         await elementsPage.navigateToRadioButton();
     });
