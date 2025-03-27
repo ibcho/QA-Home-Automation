@@ -48,7 +48,8 @@ test.describe('redirect to broken link', () => {
 
     test('verify broken link redirects to correct URL and displays correct content', async () => {
         await elementsBrokenLinksImages.clickBrokenLink();
-
+        await page.waitForLoadState('domcontentloaded');
+        
         const statusCodeDiv = page.locator('.example');
         await expect(statusCodeDiv).toContainText('This page returned a 500 status code.');
         await expect(statusCodeDiv).toContainText('For a definition and common list of HTTP status codes, go');
