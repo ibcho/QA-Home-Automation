@@ -1,7 +1,7 @@
 import { test, expect, BrowserContext, Page } from '@playwright/test';
 import HomePage from '../../pages/HomePage';
 import AlertsFrameWindows from '../../pages/AlertsFrameWindows/AlersFrameWindows';
-import Alerts from '../../pages/AlertsFrameWindows/ALerts';
+import Alerts from '../../pages/AlertsFrameWindows/Alerts';
 
 let homePage: HomePage;
 let context: BrowserContext;
