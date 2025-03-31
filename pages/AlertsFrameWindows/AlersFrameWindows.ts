@@ -14,7 +14,7 @@ export default class AlertsFrameWindows {
         this.page = page;
          
         this.browserWindows = page.locator('text=Browser Windows');
-        this.alerts = page.locator('text=Alerts');
+        this.alerts = page.locator('span.text', { hasText: 'Alerts' });
         this.frames = page.locator('text=Frames');
         this.nestedFrames = page.locator('text=Nested Frames');
         this.modalDialogs = page.locator('text=Modal Dialogs');
