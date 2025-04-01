@@ -21,7 +21,7 @@ test.beforeAll(async ({ browser }) => {
 
     await homePage.loadHomePage();
     await homePage.gotoAlertsFrameWindows();
-    await alertsFrameWindows.clickAlerts();
+    await alertsFrameWindows.navigateToAlerts();
 
 });
 
@@ -39,25 +39,59 @@ test.describe('Testing Alerts', () => {
     });
 
     test('Test Alert with delay of 5 seconds', async () => {
-        page.once('dialog', dialog => {
-          console.log(`Dialog message: ${dialog.message()}`);
-          dialog.dismiss().catch(() => {});
-        });
-        await alerts.clickAlertButton5seconds();
+      
+      await alerts.clickAlertButton5seconds();
+      const dialog = await page.waitForEvent('dialog', { timeout: 6000 });
+      console.log(`Dialog message: ${dialog.message()}`); 
+      expect(dialog.message()).toBe('This alert appeared after 5 seconds'); 
+      await dialog.accept();
+  });
+
+    test('Test Dialog Button "OK"', async () => {
+ 
+      // Listen for the confirmation dialog
+      page.once('dialog', async (dialog) => {
+          console.log(`Dialog message: ${dialog.message()}`); 
+          expect(dialog.message()).toBe('Do you confirm action?'); 
+          await dialog.accept(); // Click "OK"
+      });
+
+      await alerts.clickAlertConfirmButton();
+      const confirmResult = page.locator('#confirmResult');
+      await expect(confirmResult).toHaveText('You selected Ok');
+  });
+
+  test('Test Dialog Button "Cancel"', async () => {
+
+    // Listen for the confirmation dialog
+    page.once('dialog', async (dialog) => {
+        console.log(`Dialog message: ${dialog.message()}`); 
+        expect(dialog.message()).toBe('Do you confirm action?'); 
+        await dialog.dismiss(); 
     });
 
-    // test('Test Confirm', async () => {
-    //     await alertsFrameWindows.clickConfirmButton();
-    //     await expect(alertsFrameWindows.getAlertMessage()).toBe('Press a button!');
-    //     await alertsFrameWindows.clickAlertButton();
-    //     await expect(alertsFrameWindows.getAlertMessage()).toBe('You pressed OK!');
-    // });
+    await alerts.clickAlertConfirmButton();
+    const confirmResult = page.locator('#confirmResult');
+    await expect(confirmResult).toHaveText('You selected Cancel');
+});
 
-    // test('Test Prompt', async () => {
-    //     await alertsFrameWindows.clickPromptButton();
-    //     await expect(alertsFrameWindows.getAlertMessage()).toBe('Please enter your name');
-    //     await alertsFrameWindows.setAlertPromptText('John Doe');
-    //     await alertsFrameWindows.clickAlertButton();
-    //     await expect(alertsFrameWindows.getAlertMessage()).toBe('Hello John Doe! How are you today?');
-    // });
+test('Test Dialog Button "Enter Free Text"', async () => {
+
+  const name = 'Ibrahim Gavazov';  
+
+  // Listen for the prompt dialog
+  page.once('dialog', async (dialog) => {
+      console.log(`Dialog message: ${dialog.message()}`); 
+      expect(dialog.message()).toBe('Please enter your name'); 
+      await dialog.accept(name);
+  });
+
+  // Trigger the prompt dialog
+  await alerts.clickAlertPrompButtonEnterText();
+
+  // Verify the result message
+  const promptResult = page.locator('#promptResult');
+  await expect(promptResult).toHaveText(`You entered ${name}`); 
+});
+
 });

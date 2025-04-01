@@ -3,8 +3,9 @@ import PracticeFormPage from '../../pages/Forms/PracticeFormPage';
 import HomePage from '../../pages/HomePage';
 import path from 'path';
 
-let practiceFormPage: PracticeFormPage;
 let homePage: HomePage;
+let practiceFormPage: PracticeFormPage;
+
 
 test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);

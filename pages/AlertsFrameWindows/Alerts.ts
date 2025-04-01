@@ -15,7 +15,8 @@ export default class Alerts {
         this.alertButton = page.locator('#alertButton');
         this.alerButton5seconds = page.locator('button#timerAlertButton');
         this.alertButtonPrompt = page.locator('button#confirmButton');
-        this.alertButtonEnterText = page.locator('button#promptButton');
+        this.alertButtonEnterText = page.locator('#promtButton')
+        
     }
 
     async clickAlertButton() {
@@ -26,11 +27,12 @@ export default class Alerts {
         await this.alerButton5seconds.click();
     }
 
-    async clickAlertButtonPrompt() {
+    async clickAlertConfirmButton() {
         await this.alertButtonPrompt.click();
     }
 
-    async clickAlertButtonEnterText() {
+    async clickAlertPrompButtonEnterText() {
         await this.alertButtonEnterText.click();
     }
+
 }

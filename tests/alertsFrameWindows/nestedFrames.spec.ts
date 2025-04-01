@@ -19,7 +19,7 @@ test.beforeAll(async ({ browser }) => {
 
     await homePage.loadHomePage();
     await homePage.gotoAlertsFrameWindows();
-    await alertsFrameWindows.clickNestedFrames();
+    await alertsFrameWindows.navigateToNestedFrames();
 });
 
 

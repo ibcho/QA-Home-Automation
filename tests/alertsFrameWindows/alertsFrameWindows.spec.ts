@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
 
     // Navigate to the Forms section
     await homePage.gotoAlertsFrameWindows();
-    await alertsFrameWindows.clickBrowserWindows();
+    await alertsFrameWindows.navigateToBrowserWindows();
 
 });
 
