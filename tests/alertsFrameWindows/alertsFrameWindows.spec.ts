@@ -1,4 +1,4 @@
-import { test, expect, BrowserContext, Page } from '@playwright/test';
+import { test } from '@playwright/test';
 import HomePage from '../../pages/HomePage';
 import BrowserWindows from '../../pages/AlertsFrameWindows/BrowserWindows';
 import AlertsFrameWindows from '../../pages/AlertsFrameWindows/AlersFrameWindows';
@@ -35,7 +35,6 @@ test.describe('Browser Windows Tests', () => {
 
     test('Verify new window message functionality', async () => {
         await browserWindows.clickNewWindowMessage();
-       // await browserWindows.verifyNewWindowMessage();
        
     });
 });

@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export default class Alerts { 
     readonly page: Page;
@@ -20,7 +20,7 @@ export default class Alerts {
     }
 
     async clickAlertButton() {
-        await this.alertButton.click();
+        await this.alertButton.dblclick();
     }
 
     async clickAlertButton5seconds() {
@@ -33,6 +33,19 @@ export default class Alerts {
 
     async clickAlertPrompButtonEnterText() {
         await this.alertButtonEnterText.click();
+    }
+
+    async handleDialog(action: 'accept' | 'dismiss', expectedMessage?: string, inputText?: string) {
+        this.page.once('dialog', async (dialog) => {
+            if (expectedMessage) {
+                expect(dialog.message()).toBe(expectedMessage);
+            }
+            if (action === 'accept') {
+                await dialog.accept(inputText);
+            } else {
+                await dialog.dismiss();
+            }
+        });
     }
 
 }

@@ -9,6 +9,10 @@ let page: Page;
 let alertsFrameWindows: AlertsFrameWindows;
 let alerts: Alerts;
 
+const ALERT_MESSAGE = 'You clicked a button';
+const ALERT_MESSAGE_DELAY = 'This alert appeared after 5 seconds';
+const CONFIRM_MESSAGE = 'Do you confirm action?';
+const PROMPT_MESSAGE = 'Please enter your name'; 
 
 test.beforeAll(async ({ browser }) => {
     context = await browser.newContext();
@@ -30,68 +34,43 @@ test.beforeAll(async ({ browser }) => {
 // });
 
 test.describe('Testing Alerts', () => { 
-    test('Test Alert', async () => {
-        page.once('dialog', dialog => {
-          console.log(`Dialog message: ${dialog.message()}`);
-          dialog.dismiss().catch(() => {});
-        });
-        await alerts.clickAlertButton();
-    });
+  test('Test Alert', async () => {
+    await alerts.handleDialog('accept', ALERT_MESSAGE);
+    await alerts.clickAlertButton();
+  });
 
     test('Test Alert with delay of 5 seconds', async () => {
       
       await alerts.clickAlertButton5seconds();
-      const dialog = await page.waitForEvent('dialog', { timeout: 6000 });
+      const dialog = await page.waitForEvent('dialog', { timeout: 6500 });
       console.log(`Dialog message: ${dialog.message()}`); 
-      expect(dialog.message()).toBe('This alert appeared after 5 seconds'); 
+      expect(dialog.message()).toBe(ALERT_MESSAGE_DELAY); 
       await dialog.accept();
   });
 
-    test('Test Dialog Button "OK"', async () => {
- 
-      // Listen for the confirmation dialog
-      page.once('dialog', async (dialog) => {
-          console.log(`Dialog message: ${dialog.message()}`); 
-          expect(dialog.message()).toBe('Do you confirm action?'); 
-          await dialog.accept(); // Click "OK"
-      });
+  test('Test Dialog Button "OK"', async () => {
+    await alerts.handleDialog('accept', CONFIRM_MESSAGE);
+    await alerts.clickAlertConfirmButton();
 
-      await alerts.clickAlertConfirmButton();
-      const confirmResult = page.locator('#confirmResult');
-      await expect(confirmResult).toHaveText('You selected Ok');
+    const confirmResult = page.locator('#confirmResult');
+    await expect(confirmResult).toHaveText('You selected Ok');
   });
 
   test('Test Dialog Button "Cancel"', async () => {
-
-    // Listen for the confirmation dialog
-    page.once('dialog', async (dialog) => {
-        console.log(`Dialog message: ${dialog.message()}`); 
-        expect(dialog.message()).toBe('Do you confirm action?'); 
-        await dialog.dismiss(); 
-    });
-
+    await alerts.handleDialog('dismiss', CONFIRM_MESSAGE);
     await alerts.clickAlertConfirmButton();
+
     const confirmResult = page.locator('#confirmResult');
     await expect(confirmResult).toHaveText('You selected Cancel');
-});
-
-test('Test Dialog Button "Enter Free Text"', async () => {
-
-  const name = 'Ibrahim Gavazov';  
-
-  // Listen for the prompt dialog
-  page.once('dialog', async (dialog) => {
-      console.log(`Dialog message: ${dialog.message()}`); 
-      expect(dialog.message()).toBe('Please enter your name'); 
-      await dialog.accept(name);
   });
 
-  // Trigger the prompt dialog
-  await alerts.clickAlertPrompButtonEnterText();
+  test('Test Dialog Button "Enter Free Text"', async () => {
+    const name = 'Ibrahim Gavazov';
+    
+    await alerts.handleDialog('accept', PROMPT_MESSAGE, name);
+    await alerts.clickAlertPrompButtonEnterText();
 
-  // Verify the result message
-  const promptResult = page.locator('#promptResult');
-  await expect(promptResult).toHaveText(`You entered ${name}`); 
-});
-
+    const promptResult = page.locator('#promptResult');
+    await expect(promptResult).toHaveText(`You entered ${name}`);
+  });
 });
