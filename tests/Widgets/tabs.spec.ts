@@ -40,8 +40,9 @@ test.describe('Testing Tabs', () => {
 
     test('Verify tab content', async () => {
         // Verify the content of the first tab
-        await tabs.verifyTabContent(0, 'What is Lorem Ipsum?'); 
-        // Verify the content of the second tab
+        await tabs.verifyTabsStatus();
+        await tabs.verifyTabContent(0, 'What is Lorem Ipsum?'); // Adjust as needed
+        
         await tabs.verifyTabContent(1, 'Where does it come from?'); 
         // Verify the content of the third tab
         await tabs.verifyTabContent(2, 'Why do we use it?');

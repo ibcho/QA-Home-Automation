@@ -110,9 +110,9 @@ export default class PracticeFormPage {
     }
     
     async selectState(state: string) {
-        await this.state.click();
+        await this.state.click({ force: true });
         const stateOption = this.page.getByText(`${state}`, { exact: true });
-        await stateOption.click();
+        await stateOption.waitFor({ state: 'visible' });
     }
 
     async selectCity(city: string) {

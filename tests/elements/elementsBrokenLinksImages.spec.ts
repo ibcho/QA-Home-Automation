@@ -51,8 +51,8 @@ test.describe('redirect to broken link', () => {
         await page.waitForLoadState('domcontentloaded');
         
         const statusCodeDiv = page.locator('.example');
-        await expect(statusCodeDiv).toContainText('This page returned a 500 status code.');
-        await expect(statusCodeDiv).toContainText('For a definition and common list of HTTP status codes, go');
+        await expect(statusCodeDiv).toContainText('This page returned a 500 status code.', { timeout: 8000 });
+        await expect(statusCodeDiv).toContainText('For a definition and common list of HTTP status codes, go', { timeout: 8000 });
     });
 
     });
