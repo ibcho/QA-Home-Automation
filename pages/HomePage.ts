@@ -11,7 +11,7 @@ export default class HomePage {
           forms: page.locator("//div[@class='card mt-4 top-card']//h5[text()='Forms']"),
           alertsFrameWindows: page.locator('div').filter({ hasText: /^Alerts, Frame & Windows$/ }).nth(1),
           
-          widgets: page.locator("//div[contains(text(),'Widgets')]"),
+          widgets: page.locator('div').filter({ hasText: /^Widgets$/ }).first(),
           interactions: page.locator("//div[contains(text(),'Interactions')]"),
           bookStoreApplication: page.locator("//div[contains(text(),'Book Store Application')]"),
       };
