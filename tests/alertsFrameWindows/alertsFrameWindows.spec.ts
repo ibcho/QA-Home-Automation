@@ -21,6 +21,15 @@ test.beforeEach(async ({ page }) => {
 
 });
 
+test.afterEach(async ({ context }) => {
+    // Close all additional tabs or windows except the main one
+    const pages = context.pages();
+    for (const page of pages.slice(1)) {
+        await page.close();
+    }
+});
+
+
 test.describe('Browser Windows Tests', () => {     
 
     test('Verify new tab content', async () => {
@@ -31,10 +40,6 @@ test.describe('Browser Windows Tests', () => {
     test('Verify new window button functionality', async () => {
         await browserWindows.clickNewWindowButton();
         await browserWindows.verifyNewWindowOpened();
-    });
-
-    test('Verify new window message functionality', async () => {
         await browserWindows.clickNewWindowMessage();
-       
     });
 });

@@ -34,6 +34,5 @@ test.describe('Testing Slider', () => {
 
         // Verify the slider value is set correctly
         expect(sliderValue).toBe(inputValue.toString());
-        console.log('Slider value is set to:', sliderValue);
     });
 });

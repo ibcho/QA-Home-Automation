@@ -37,12 +37,9 @@ export default class PracticeFormPage {
         this.hobbies = page.locator('.custom-checkbox');
         this.picture = page.locator('#uploadPicture');
         this.currentAddress = page.locator('#currentAddress');
-        this.state = page.locator('div').filter({ hasText: /^Select State$/ }).nth(3)
-        this.city = page.locator('div').filter({ hasText: /^Select City$/ }).nth(3)
+        this.state = page.locator('#state svg')
+        this.city = page.locator('#city svg')
   
-
-        //this.state = page.locator('#state');
-        //this.city = page.locator('#city');
         this.submitButton = page.locator('#submit');
     }
 
@@ -113,12 +110,14 @@ export default class PracticeFormPage {
         await this.state.click({ force: true });
         const stateOption = this.page.getByText(`${state}`, { exact: true });
         await stateOption.waitFor({ state: 'visible' });
+        await stateOption.click();
     }
 
     async selectCity(city: string) {
         await this.city.click({ force: true });
         const cityOption = this.page.getByText(`${city}`, { exact: true });
-        await cityOption.click();
+        await cityOption.waitFor({ state: 'visible' }); 
+        await cityOption.click(); 
     }
 
     async clickSubmitButton() {

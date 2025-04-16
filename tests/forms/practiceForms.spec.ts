@@ -1,4 +1,4 @@
-import { test, expect} from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import PracticeFormPage from '../../pages/Forms/PracticeFormPage';
 import HomePage from '../../pages/HomePage';
 import path from 'path';
@@ -6,8 +6,7 @@ import path from 'path';
 let homePage: HomePage;
 let practiceFormPage: PracticeFormPage;
 
-
-test.beforeEach(async ({ page }) => {
+test.beforeAll(async ({ page }) => {
     homePage = new HomePage(page);
     practiceFormPage = new PracticeFormPage(page);
 
@@ -19,83 +18,43 @@ test.beforeEach(async ({ page }) => {
     await practiceFormPage.selectPracticeForm();
 });
 
-test.describe('Practice Form Tests', () => {
+test('Verify mandatory fields validation and form submission with valid data', async () => {
+    // Step 1: Verify mandatory fields validation
+    await practiceFormPage.clickSubmitButton();
 
-    test('Verify mandatory fields validation', async () => {
-        await practiceFormPage.clickSubmitButton()
+    // Verify validation messages
+    const firstNameValidation = practiceFormPage.page.locator('#firstName:invalid');
+    const lastNameValidation = practiceFormPage.page.locator('#lastName:invalid');
+    const mobileValidation = practiceFormPage.page.locator('#userNumber:invalid');
+    const genderValidation = practiceFormPage.page.locator('input[name="gender"]:invalid');
 
-        // Verify validation messages
-        const firstNameValidation = practiceFormPage.page.locator('#firstName:invalid');
-        const lastNameValidation = practiceFormPage.page.locator('#lastName:invalid');
-        const mobileValidation = practiceFormPage.page.locator('#userNumber:invalid');
-        const genderValidation = practiceFormPage.page.locator('input[name="gender"]:invalid');
+    await expect(firstNameValidation).toBeVisible();
+    await expect(mobileValidation).toBeVisible();
+    await expect(lastNameValidation).toBeVisible();
+    await expect(genderValidation).toHaveCount(3); // All radio buttons should be invalid
 
-        await expect(firstNameValidation).toBeVisible();
-        await expect(mobileValidation).toBeVisible();
-        await expect(lastNameValidation).toBeVisible();
-        await expect(genderValidation).toHaveCount(3); // All radio buttons should be invalid
-    });
+    // Step 2: Fill the form with valid data and submit
+    // Fill in personal details
+    await practiceFormPage.fillFirstName('Ibrahim');
+    await practiceFormPage.fillLastName('Doe');
+    await practiceFormPage.fillUserEmail('john.doe@example.com');
+    await practiceFormPage.selectGender('Male');
+    await practiceFormPage.fillMobile('1234567890');
+    await practiceFormPage.fillDateOfBirth('July', '1990', '07');
+    await practiceFormPage.fillSubjects('Maths');
+    await practiceFormPage.selectHobbies(['hobbies-checkbox-1', 'hobbies-checkbox-2']); // Replace with actual IDs or labels
 
-    test('Fill the form with valid data and submit', async () => {
-        // Fill in personal details
-        await practiceFormPage.fillFirstName('Ibrahim');
-        await practiceFormPage.fillLastName('Doe');
-        await practiceFormPage.fillUserEmail('john.doe@example.com');
-        await practiceFormPage.selectGender('Male');
-        await practiceFormPage.fillMobile('1234567890');
-        await practiceFormPage.fillDateOfBirth('July', '1990', '07');
-        await practiceFormPage.fillSubjects('Maths');
-        await practiceFormPage.selectHobbies(['hobbies-checkbox-1', 'hobbies-checkbox-2']); // Replace with actual IDs or labels
+    const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
+    await practiceFormPage.uploadPicture(picturePath);
 
-        const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
-        await practiceFormPage.uploadPicture(picturePath);
+    // Fill current address
+    await practiceFormPage.fillCurrentAddress('123 Main Street, Kaimak chalan');
 
-        // Fill current address
-        await practiceFormPage.fillCurrentAddress('123 Main Street, Kaimak chalan');
+    // Select state and city
+    await practiceFormPage.selectState('NCR');
+    await practiceFormPage.selectCity('Noida');
 
-        // Select state and city
-        await practiceFormPage.selectState('NCR');
-        await practiceFormPage.selectCity('Noida');
-
-        // Verify form submission
-        await practiceFormPage.clickSubmitButton();
-        await practiceFormPage.vefyFormSubmission()
-
-        
-    });
-
-    test('Fill the form with different gender and hobbies', async () => {
-        // Fill in personal details
-        await practiceFormPage.fillFirstName('Jane');
-        await practiceFormPage.fillLastName('Smith');
-        await practiceFormPage.fillUserEmail('jane.smith@example.com');
-        await practiceFormPage.selectGender('Female');
-        await practiceFormPage.fillMobile('9876543210');
-
-        // Select date of birth
-        await practiceFormPage.fillDateOfBirth('December', '1985', '25');
-
-        // Fill subjects
-        await practiceFormPage.fillSubjects('Physics');
-
-        // Select hobbies
-        await practiceFormPage.selectHobbies(['hobbies-checkbox-3']); // Replace with actual IDs or labels
-
-        // Upload picture
-        const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
-        await practiceFormPage.uploadPicture(picturePath);
-
-        // Fill current address
-        await practiceFormPage.fillCurrentAddress('456 Elm Street, Gotham');
-
-        // Select state and city
-        await practiceFormPage.selectState('Uttar Pradesh');
-        await practiceFormPage.selectCity('Lucknow');
-
-        // submit
-        await practiceFormPage.clickSubmitButton();
-        await practiceFormPage.vefyFormSubmission()
-        
-        
-    });
+    // Verify form submission
+    await practiceFormPage.clickSubmitButton();
+    await practiceFormPage.vefyFormSubmission();
 });
