@@ -23,8 +23,8 @@ export default class Widgets {
         this.progressBar = page.getByText('Progress Bar');
         this.tabs = page.getByText('Tabs');
         this.toolTip = page.getByText('Tool Tips');
-        this.menu = page.getByText('Menu');
-        this.selectMenu = page.getByText('Select Menu');
+        this.menu = page.getByText('Menu').nth(0);
+        this.selectMenu = page.getByText('Select Menu').nth(1);;
     }
 
     private async navigateToSection(locator: Locator, sectionName: string) {
