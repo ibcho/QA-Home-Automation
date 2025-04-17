@@ -22,6 +22,10 @@ test.beforeAll(async ({ browser }) => {
   await widgets.navigateToMenu();
 });
 
+test.afterAll(async () => {
+  await context.close();
+});
+
 test('Verify menu interactions', async ({}) => {
     await menu.hoverOverMainItem1();
     await menu.hoverOverMainItem2_And_SubSubListAndVerifyItems();
