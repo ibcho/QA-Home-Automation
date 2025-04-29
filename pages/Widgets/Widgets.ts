@@ -24,7 +24,7 @@ export default class Widgets {
         this.tabs = page.getByText('Tabs');
         this.toolTip = page.getByText('Tool Tips');
         this.menu = page.getByText('Menu').nth(0);
-        this.selectMenu = page.getByText('Select Menu').nth(1);;
+        this.selectMenu = page.locator('li#item-8').nth(1);
     }
 
     private async navigateToSection(locator: Locator, sectionName: string) {
