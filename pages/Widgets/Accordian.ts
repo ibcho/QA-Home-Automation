@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 
-export default class AccordianPage { 
+export default class AccordianPage {
     page: Page;
 
     whatIsLoremIpsum_dropDown: Locator;
@@ -10,7 +10,6 @@ export default class AccordianPage {
     whyDoweUseIt_dropDown: Locator;
     whyDoweUseIt_dropDownText: Locator;
 
-    // New locators for the specific <p> elements
     loremIpsumParagraph: Locator;
     longEstablishedFactParagraph: Locator;
 
@@ -23,63 +22,50 @@ export default class AccordianPage {
         this.whyDoweUseIt_dropDown = page.locator('#section3Heading');
         this.whyDoweUseIt_dropDownText = page.locator('#section3Content > p').nth(0);
 
-        // Locators for the specific <p> elements
         this.loremIpsumParagraph = page.locator('#section1Content > p');
         this.longEstablishedFactParagraph = page.locator('#section3Content > p');
     }
 
+    async clickDropDown(dropDown: Locator) {
+        await dropDown.click();
+    }
+
+    async verifyText(locator: Locator, expectedText: string) {
+        const text = await locator.innerText();
+        if (text !== expectedText) {
+            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
+        }
+    }
+
     async clickWhatIsLoremIpsum() {
-        await this.whatIsLoremIpsum_dropDown.dblclick();
+        await this.clickDropDown(this.whatIsLoremIpsum_dropDown);
     }
+
     async clickWhereDoesItComeFrom() {
-        await this.whereDoesItComeFrom_dropDown.click();
+        await this.clickDropDown(this.whereDoesItComeFrom_dropDown);
     }
+
     async clickWhyDoweUseIt() {
-        await this.whyDoweUseIt_dropDown.click();
+        await this.clickDropDown(this.whyDoweUseIt_dropDown);
     }
 
     async verifyWhatIsLoremIpsumText(expectedText: string) {
-        const text = await this.whatIsLoremIpsum_dropDownText.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }
-    }
-
-    async verifyWhereDoesItComeFromFirstParagraph(expectedText: string) {
-        const text = await this.whereDoesItComeFrom_dropDownText.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }
+        await this.verifyText(this.whatIsLoremIpsum_dropDownText, expectedText);
     }
 
     async verifyWhereDoesItComeFromText(expectedText: string) {
-        const text = await this.whereDoesItComeFrom_dropDownText.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }
+        await this.verifyText(this.whereDoesItComeFrom_dropDownText, expectedText);
     }
-
 
     async verifyWhyDoweUseItText(expectedText: string) {
-        const text = await this.whyDoweUseIt_dropDownText.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }   
+        await this.verifyText(this.whyDoweUseIt_dropDownText, expectedText);
     }
 
-    // New method to verify the "Lorem Ipsum" paragraph
     async verifyLoremIpsumParagraph(expectedText: string) {
-        const text = await this.loremIpsumParagraph.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }
+        await this.verifyText(this.loremIpsumParagraph, expectedText);
     }
 
-    // New method to verify the "Long Established Fact" paragraph
     async verifyLongEstablishedFactParagraph(expectedText: string) {
-        const text = await this.longEstablishedFactParagraph.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }
+        await this.verifyText(this.longEstablishedFactParagraph, expectedText);
     }
 }

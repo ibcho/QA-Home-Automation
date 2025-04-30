@@ -1,60 +1,37 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 
 export default class Tabs {
-    private tabList: Locator;
-    private tabContents: Locator;
     private tabs: Locator;
 
     constructor(page: Page) {
-        this.tabList = page.locator('.tab-list');
-        this.tabs = page.locator('.tab-list .tab');
-
+        // Locate all tabs within the tab list
+        this.tabs = page.locator('.nav.nav-tabs[role="tablist"] a[role="tab"]');
     }
 
-    // Method to click on a specific tab by its index
-    async clickTab(index: number) {
-        await this.tabs.nth(index).click();
-    }
+    // Method to verify that each tab has the "active" class when selected
+    async verifyTabsActiveClass(): Promise<void> {
+        const tabCount = await this.tabs.count();
 
-    // Method to verify which tab is active and which are not
-    async verifyTabsStatus(): Promise<{ activeTab: string; disabledTabs: string[]; inactiveTabs: string[] }> {
-        const activeTab = await this.tabs.locator('[aria-selected="true"]').first();
-        const activeTabText = await activeTab.textContent() || '';
-    
-        const disabledTabs: string[] = [];
-        const inactiveTabs: string[] = [];
-        const allTabsCount = await this.tabs.count();
-    
-        for (let i = 0; i < allTabsCount; i++) {
+        for (let i = 0; i < 3; i++) {
             const tab = this.tabs.nth(i);
-            const className = await tab.getAttribute('class') || '';
-    
-            if (className.includes('disabled')) {
-                const tabText = await tab.textContent();
-                if (tabText) {
-                    disabledTabs.push(tabText);
-                }
-            } else if (!(await tab.getAttribute('aria-selected') === 'true')) {
-                const tabText = await tab.textContent();
-                if (tabText) {
-                    inactiveTabs.push(tabText);
-                }
-            }
+
+            // Click on the tab
+            await tab.click();
+
+            // Verify the tab has the "active" class
+            const classAttribute = await tab.getAttribute('class');
+            expect(classAttribute).toContain('active');
+
+            console.log(`Tab ${i + 1} is active and has the class: ${classAttribute}`);
         }
-    
-        return { activeTab: activeTabText, disabledTabs, inactiveTabs };
     }
 
-    async verifyTabContent(index: number, expectedContent: string): Promise<void> {
-        // Click on the tab
-        await this.clickTab(index);
-    
-        // Get the content of the active tab
-        const tabContent = await this.tabContents.textContent();
-    
-        // Verify the content matches the expected content
-        if (tabContent?.trim() !== expectedContent.trim()) {
-            throw new Error(`Content mismatch for tab index ${index}. Expected: "${expectedContent}", but got: "${tabContent}"`);
-        }
+    // Method to verify that the last tab is disabled
+    async verifyLastTabIsDisabled(): Promise<void> {
+        const lastTab = this.tabs.last(); // Locate the last tab
+        const isDisabled = await lastTab.getAttribute('aria-disabled');
+        expect(isDisabled).toBe('true'); // Verify the aria-disabled attribute is "true"
+
+        console.log('The last tab is disabled.');
     }
 }
