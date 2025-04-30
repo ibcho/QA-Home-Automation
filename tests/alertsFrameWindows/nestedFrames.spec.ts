@@ -1,39 +1,22 @@
-import { test, BrowserContext, Page } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import AlertsFrameWindows from '../../pages/AlertsFrameWindows/AlersFrameWindows';
 import NestedFramesPage from '../../pages/AlertsFrameWindows/NestedFrames';
 import HomePage from '../../pages/HomePage';
 
-let homePage: HomePage;
-let context: BrowserContext;
-let nestedFramesPage: NestedFramesPage;
-let alertsFrameWindows: AlertsFrameWindows;
-let page: Page;
+test('Verify nested frames content', async ({ page }) => {
+    // Initialize page objects
+    const homePage = new HomePage(page);
+    const nestedFramesPage = new NestedFramesPage(page);
+    const alertsFrameWindows = new AlertsFrameWindows(page);
 
-test.beforeAll(async ({ browser }) => {
-    context = await browser.newContext();
-    page = await context.newPage();
-
-    homePage = new HomePage(page);
-    nestedFramesPage = new NestedFramesPage(page);
-    alertsFrameWindows = new AlertsFrameWindows(page);
-
+    // Navigate to the Nested Frames section
     await homePage.loadHomePage();
     await homePage.gotoAlertsFrameWindows();
     await alertsFrameWindows.navigateToNestedFrames();
+
+    // Verify the parent frame text
+    await nestedFramesPage.verifyParentFrameText('Parent frame');
+
+    // Verify the child frame text
+    await nestedFramesPage.verifyChildFrameText('Child Iframe');
 });
-
-
-test.afterAll(async () => {
-    await context.close();
-});
-
-test.describe('Verify nested frames content', () => {
-    test('verify parent iFrame text', async () => {
-        await nestedFramesPage.verifyParentFrameText('Parent frame');
-    });
-
-    test('verify child iFrame text', async () => {
-        await nestedFramesPage.verifyChildFrameText('Child Iframe');
-    });
-});
-
