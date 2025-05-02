@@ -13,6 +13,7 @@ test.describe('Testing Date Pickers', () => {
         await homePage.loadHomePage();
         await homePage.gotoWidgets();
         await widgets.navigateToDatePicker();
+        await page.waitForTimeout(3000); 
 
         // Verify the date pickers
         const date = '04/11/2025';

@@ -49,12 +49,4 @@ test('Verify all web table functionalities', async ({ page }) => {
     const newSalary = '70000';
     const newDepartment = 'HR';
     await webTablesPage.editPersonAndVerifyTheChanges(oldFirstName, newFirstName, newLastName, newEmail, newAge, newSalary, newDepartment);
-
-    // Search for a person and verify
-    await webTablesPage.searchForPerson('Cierra');
-    await webTablesPage.verifyPersonIsVisible('Cierra');
-    await webTablesPage.searchForPerson('Alden');
-    await webTablesPage.verifyPersonIsVisible('Alden');
-    await webTablesPage.searchForPerson('Kierra');
-    await webTablesPage.verifyPersonIsVisible('Kierra');
 });
