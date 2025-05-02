@@ -1,47 +1,27 @@
-import { test, expect, BrowserContext, Page } from '@playwright/test';
-import WebTablesPage from '../../pages/Elements/ElementsWebTablesPage';
-import ElementsPage from '../../pages/Elements/ElementsPage';
+import { test, expect } from '@playwright/test';
 import ButtonsPage from '../../pages/Elements/ElementsButtonsPage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
 import HomePage from '../../pages/HomePage';
 
-let webTablesPage: WebTablesPage;
-let homePage: HomePage;
-let elementsPage: ElementsPage;
-let context: BrowserContext;
-let buttonsPage: ButtonsPage;
-let page: Page;
+test('Verify button actions and messages', async ({ page }) => {
+    const homePage = new HomePage(page);
+    const elementsPage = new ElementsPage(page);
+    const buttonsPage = new ButtonsPage(page);
 
-test.beforeAll(async ({ browser }) => {
-    context = await browser.newContext();
-    page = await context.newPage();
-
-    homePage = new HomePage(page);
-    elementsPage = new ElementsPage(page);
-    webTablesPage = new WebTablesPage(page);
-    buttonsPage = new ButtonsPage(page);
-
+    // Navigate to the Buttons section
     await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToButtons();
-});
 
-test.afterAll(async () => {
-    await context.close();
-});
+    // Verify double click message
+    await buttonsPage.performDoubleClick();
+    await buttonsPage.verifyDoubleClickMessage('You have done a double click');
 
-test.describe('Buttons tests', () => {
-    test('verify double click message', async () => {
-        await buttonsPage.performDoubleClick();
-        await buttonsPage.verifyDoubleClickMessage('You have done a double click');
-    });
+    // Verify right click message 
+    await buttonsPage.performRightClick();
+    await buttonsPage.verifyRightClickMessage('You have done a right click');
 
-    test('verify right click message', async () => {
-        await buttonsPage.performRightClick();
-        await buttonsPage.verifyRightClickMessage('You have done a right click');
-    });
-
-    test('verify click me message', async () => {
-        await buttonsPage.performClickMe();
-        await buttonsPage.verifyClickMeMessage('You have done a dynamic click');
-    });
+    // Verify click me message
+    await buttonsPage.performClickMe();
+    await buttonsPage.verifyClickMeMessage('You have done a dynamic click');
 });

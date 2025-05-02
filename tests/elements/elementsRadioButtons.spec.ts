@@ -1,60 +1,38 @@
-import { test, expect, BrowserContext, Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import ElementsRadioButtonsPage from '../../pages/Elements/ElementsRadioButtonsPage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
 import HomePage from '../../pages/HomePage';
 
-test.describe('Radio Buttons Tests', () => {
-    let radioButtonsPage: ElementsRadioButtonsPage;
-    let homePage: HomePage;
-    let elementsPage: ElementsPage;
-    let context: BrowserContext;
-    let page: Page;
+test('Verify all radio button functionalities', async ({ page }) => {
+    const homePage = new HomePage(page);
+    const elementsPage = new ElementsPage(page);
+    const radioButtonsPage = new ElementsRadioButtonsPage(page);
 
-    test.beforeAll(async ({ browser }) => {
-        context = await browser.newContext();
-        page = await context.newPage();
+    // Navigate to the Radio Buttons section
+    await homePage.loadHomePage();
+    await homePage.gotoElements();
+    await elementsPage.navigateToRadioButton();
 
-        homePage = new HomePage(page);
-        elementsPage = new ElementsPage(page);
-        radioButtonsPage = new ElementsRadioButtonsPage(page);
+    // Verify the radio buttons title is visible
+    expect(await radioButtonsPage.isRadioButtonsTitleVisible()).toBeTruthy();
 
-        // Navigate to the radio buttons page
-        await homePage.loadHomePage();
-        await homePage.gotoElements();
-        await elementsPage.navigateToRadioButton();
-    });
+    // Test: Select "yes" radio button
+    await radioButtonsPage.selectRadioButton('yes');
+    expect(await radioButtonsPage.isRadioButtonSelected('yes')).toBeTruthy();
+    expect(await radioButtonsPage.getSelectedRadioButtonText()).toBe('Yes');
 
-    test.afterAll(async () => {
-        await context.close();
-    });
+    // Test: Select "impressive" radio button
+    await radioButtonsPage.selectRadioButton('impressive');
+    expect(await radioButtonsPage.isRadioButtonSelected('impressive')).toBeTruthy();
+    expect(await radioButtonsPage.getSelectedRadioButtonText()).toBe('Impressive');
 
-    test('is Radio button title visible', async () => {
-        expect(await radioButtonsPage.isRadioButtonsTitleVisible()).toBeTruthy();
-    });
+    // Test: Ensure "yes" is not selected when "impressive" is selected
+    expect(await radioButtonsPage.isRadioButtonSelected('yes')).toBeFalsy();
 
-    test('select "yes" radio button', async () => {
-        await radioButtonsPage.selectRadioButton('yes');
-        expect(await radioButtonsPage.isRadioButtonSelected('yes')).toBeTruthy();
-        expect(await radioButtonsPage.getSelectedRadioButtonText()).toBe('Yes');
-    });
+    // Test: Ensure "impressive" is not selected when "yes" is selected
+    await radioButtonsPage.selectRadioButton('yes');
+    expect(await radioButtonsPage.isRadioButtonSelected('impressive')).toBeFalsy();
 
-    test('select "impressive" radio button', async () => {
-        await radioButtonsPage.selectRadioButton('impressive');
-        expect(await radioButtonsPage.isRadioButtonSelected('impressive')).toBeTruthy();
-        expect(await radioButtonsPage.getSelectedRadioButtonText()).toBe('Impressive');
-    });
-
-    test('should not select the "yes" radio button when "impressive" is selected', async () => {
-        await radioButtonsPage.selectRadioButton('impressive');
-        expect(await radioButtonsPage.isRadioButtonSelected('yes')).toBeFalsy();
-    });
-
-    test('should not select the "impressive" radio button when "yes" is selected', async () => {
-        await radioButtonsPage.selectRadioButton('yes');
-        expect(await radioButtonsPage.isRadioButtonSelected('impressive')).toBeFalsy();
-    });
-
-    test('should verify that "no" radio button is disabled', async () => {
-        expect(await radioButtonsPage.isRadioButtonDisabled('no')).toBeTruthy();
-    });
+    // Test: Verify "no" radio button is disabled
+    expect(await radioButtonsPage.isRadioButtonDisabled('no')).toBeTruthy();
 });

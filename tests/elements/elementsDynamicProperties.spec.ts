@@ -1,45 +1,27 @@
-import { test, expect, BrowserContext, Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import ElementsDynamicProperties from '../../pages/Elements/ElementsDynamicProperties';
 import HomePage from '../../pages/HomePage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
 
-let elementsDynamicProperties: ElementsDynamicProperties;
-let homePage: HomePage;
-let elementsPage: ElementsPage;
-let context: BrowserContext;
-let page: Page;
+test('Verify all dynamic properties functionalities', async ({ page }) => {
+    const homePage = new HomePage(page);
+    const elementsPage = new ElementsPage(page);
+    const elementsDynamicProperties = new ElementsDynamicProperties(page);
 
-test.beforeAll(async ({ browser }) => {
-    context = await browser.newContext();
-    page = await context.newPage();
-
-    homePage = new HomePage(page);
-    elementsPage = new ElementsPage(page);
-    elementsDynamicProperties = new ElementsDynamicProperties(page);
-
+    // Navigate to the Dynamic Properties section
     await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToDynamicProperties();
-});
 
-test.afterAll(async () => {
-    await context.close();
-});
+    // Verify text with random ID is visible
+    await elementsDynamicProperties.verifyTextWithRandomIdVisible();
 
-test.describe('Dynamic Properties tests', () => {
-    test('verify text with random ID is visible', async () => {
-        await elementsDynamicProperties.verifyTextWithRandomIdVisible();
-    });
+    // Verify button is enabled after five seconds
+    await elementsDynamicProperties.verifyButtonEnabledAfterFiveSeconds();
 
-    test('verify button is enabled after five seconds', async () => {
-        await elementsDynamicProperties.verifyButtonEnabledAfterFiveSeconds();
-    });
-    
-    test('verify button color changes to text-danger after five seconds', async () => {
-        await elementsDynamicProperties.verifyButtonColorChange();
-    });
+    // Verify button color changes to text-danger after five seconds
+    await elementsDynamicProperties.verifyButtonColorChange();
 
-    test('verify button is visible after five seconds', async () => {
-        await elementsDynamicProperties.verifyButtonVisibleAfterFiveSeconds();
-    });
+    // Verify button is visible after five seconds
+    await elementsDynamicProperties.verifyButtonVisibleAfterFiveSeconds();
 });

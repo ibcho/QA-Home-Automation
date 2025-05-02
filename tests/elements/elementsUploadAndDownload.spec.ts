@@ -1,41 +1,25 @@
-// import { test, expect, BrowserContext, Page } from '@playwright/test';
-// import ElementsUploadAndDownloadPage from '../pages/ElementsUploadAndDownload';
-// import HomePage from '../pages/HomePage';
-// import ElementsPage from '../pages/ElementsPage';
-// import * as path from 'path';
+import { test, expect } from '@playwright/test';
+import ElementsUploadAndDownloadPage from '../../pages/Elements/ElementsUploadAndDownload';
+import HomePage from '../../pages/HomePage';
+import ElementsPage from '../../pages/Elements/ElementsPage';
+import * as path from 'path';
 
-// let elementsUploadDownloadPage: ElementsUploadAndDownloadPage;
-// let homePage: HomePage;
-// let elementsPage: ElementsPage;
-// let context: BrowserContext;
-// let page: Page;
+test('Verify upload and download functionalities', async ({ page }) => {
+    const homePage = new HomePage(page);
+    const elementsPage = new ElementsPage(page);
+    const elementsUploadDownloadPage = new ElementsUploadAndDownloadPage(page);
 
-// test.beforeAll(async ({ browser }) => {
-//     context = await browser.newContext();
-//     page = await context.newPage();
+    // Navigate to the Upload and Download section
+    await homePage.loadHomePage();
+    await homePage.gotoElements();
+    await elementsPage.navigateToUploadDownload();
 
-//     homePage = new HomePage(page);
-//     elementsPage = new ElementsPage(page);
-//     elementsUploadDownloadPage = new ElementsUploadAndDownloadPage(page);
+    // Upload a file and verify
+    const filePath = path.resolve(__dirname, 'C:/Users/IbrahimGavazov/Apartament.png');
+    await elementsUploadDownloadPage.uploadFile(filePath);
+    await elementsUploadDownloadPage.verifyUploadedFile('Apartament.png');
 
-//     await homePage.navigateToHomePage();
-//     await homePage.gotoElements();
-//     await elementsPage.navigateToUploadDownload();
-// });
-
-// test.afterAll(async () => {
-//     await context.close();
-// });
-
-// test.describe('Upload and Download tests', () => {
-//     test('upload a file and verify', async () => {
-//         const filePath = path.resolve(__dirname, 'C:/Users/IbrahimGavazov/Apartament.png');
-//         await elementsUploadDownloadPage.uploadFile(filePath);
-//         await elementsUploadDownloadPage.verifyUploadedFile('Apartament.png');
-//     });
-
-//     test('download a file and verify', async () => {
-//         const download = await elementsUploadDownloadPage.downloadFile();
-//         await elementsUploadDownloadPage.verifyDownloadedFile(download, 'sampleFile.txt');
-//     });
-// });
+    // Download a file and verify
+    const download = await elementsUploadDownloadPage.downloadFile();
+    await elementsUploadDownloadPage.verifyDownloadedFile(download, 'sampleFile.txt');
+});
