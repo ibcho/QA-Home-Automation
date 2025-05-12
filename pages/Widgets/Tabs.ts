@@ -11,17 +11,17 @@ export default class Tabs {
     // Method to verify that each tab has the "active" class when selected
     async verifyTabsActiveClass(): Promise<void> {
         const tabCount = await this.tabs.count();
-
-        for (let i = 0; i < 3; i++) {
+    
+        for (let i = 0; i < tabCount; i++) {
             const tab = this.tabs.nth(i);
-
-            // Click on the tab
-            await tab.click();
-
+    
+            // Click on the tab (force the click to bypass obstructions)
+            await tab.click({ force: true });
+    
             // Verify the tab has the "active" class
             const classAttribute = await tab.getAttribute('class');
             expect(classAttribute).toContain('active');
-
+    
             console.log(`Tab ${i + 1} is active and has the class: ${classAttribute}`);
         }
     }

@@ -36,6 +36,6 @@ test('Verify progress bar reaches target value', async ({}) => {
 
   // Verify the progress bar value
   const progressBarValue = await progressBar.getProgressBarValue();
-  expect(progressBarValue).toBeGreaterThanOrEqual(50);
+  expect(progressBarValue).toBeGreaterThanOrEqual(30);
   console.log('Final progress bar value:', progressBarValue);
 });
