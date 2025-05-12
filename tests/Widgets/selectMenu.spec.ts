@@ -23,7 +23,7 @@ test('Verify menu selections', async ({ browser }) => {
     await selectMenu.selectValueFromMultiselectDropDown('Blue', 'Green', 'Black', 'Red');
     await selectMenu.selectValueFromStandardMultiSelect('Saab', 'Opel', 'Audi');
 
-    //Close the context
+    //Close the context/browser
     await context.close();
 
 });

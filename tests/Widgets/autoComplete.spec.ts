@@ -22,18 +22,22 @@ test.beforeAll(async ({ browser }) => {
   await widgets.navigateToAutoComplete();
 });
 
-test.describe('Testing AutoComplete', () => {
-    test('Verify AutoComplete input and result', async () => {
-      const inputText = 'a';
-      const colors = ['Magenta', 'Black', 'Aqua']; // Array of colors, could be added more in the future
+test.afterAll(async () => {
+    // Close the browser context
+    await context.close();
+});
 
-      await autoComplete.enterTextInAutoCompleteInput(inputText);
 
-      //verify each color is visible
-      for (const color of colors) {
-        await expect(page.getByText(color, { exact: true })).toBeVisible();
-      }
-  
-      console.log('Following colors are visible:', colors);
-  });
+test('Verify AutoComplete input and result', async () => {
+  const inputText = 'a';
+  const colors = ['Magenta', 'Black', 'Aqua']; // Array of colors, could be added more in the future
+
+  await autoComplete.enterTextInAutoCompleteInput(inputText);
+
+  //verify each color is visible
+  for (const color of colors) {
+    await expect(page.getByText(color, { exact: true })).toBeVisible();
+  }
+
+  console.log('Following colors are visible:', colors);
 });

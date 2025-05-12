@@ -3,7 +3,11 @@ import HomePage from '../../pages/HomePage';
 import Widgets from '../../pages/Widgets/Widgets';
 import Tabs from '../../pages/Widgets/Tabs';
 
-test('Verify tabs functionality', async ({ page }) => {
+test('Verify tabs functionality', async ({ browser }) => {
+
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
     // Initialize page objects
     const homePage = new HomePage(page);
     const widgets = new Widgets(page);
@@ -17,4 +21,8 @@ test('Verify tabs functionality', async ({ page }) => {
     // Verify that each tab has the "active" class when selected
     await tabs.verifyTabsActiveClass();
     await tabs.verifyLastTabIsDisabled();
+    
+    await context.close(); // close browser
 });
+
+

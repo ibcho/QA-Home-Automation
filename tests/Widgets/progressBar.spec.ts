@@ -26,18 +26,16 @@ test.afterAll(async () => {
   await context.close();
 });
 
-test.describe('Testing Progress Bar', () => {
-    test('Verify progress bar reaches target value', async ({}) => {
-        const progressBar = new Progressbar(page);
+test('Verify progress bar reaches target value', async ({}) => {
+  const progressBar = new Progressbar(page);
 
-        // Start the progress bar
-        await progressBar.startAndStopProgressBar();
-        await page.waitForTimeout(5000); // Wait for 5 seconds to allow the progress bar to update
-        await progressBar.startAndStopProgressBar();
+  // Start the progress bar
+  await progressBar.startAndStopProgressBar();
+  await page.waitForTimeout(5000); // Wait for 5 seconds to allow the progress bar to update
+  await progressBar.startAndStopProgressBar();
 
-        // Verify the progress bar value
-        const progressBarValue = await progressBar.getProgressBarValue();
-        expect(progressBarValue).toBeGreaterThanOrEqual(50);
-        console.log('Final progress bar value:', progressBarValue);
-    });
+  // Verify the progress bar value
+  const progressBarValue = await progressBar.getProgressBarValue();
+  expect(progressBarValue).toBeGreaterThanOrEqual(50);
+  console.log('Final progress bar value:', progressBarValue);
 });
