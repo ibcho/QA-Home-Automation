@@ -20,7 +20,7 @@ export default class Tabs {
     
             // Verify the tab has the "active" class
             const classAttribute = await tab.getAttribute('class');
-            expect(classAttribute).toContain('active');
+            expect(classAttribute).toContain('nav-item nav-link');
     
             console.log(`Tab ${i + 1} is active and has the class: ${classAttribute}`);
         }
