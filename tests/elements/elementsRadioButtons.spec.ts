@@ -32,7 +32,5 @@ test('Verify all radio button functionalities', async ({ page }) => {
     // Test: Ensure "impressive" is not selected when "yes" is selected
     await radioButtonsPage.selectRadioButton('yes');
     expect(await radioButtonsPage.isRadioButtonSelected('impressive')).toBeFalsy();
-
-    // Test: Verify "no" radio button is disabled
     expect(await radioButtonsPage.isRadioButtonDisabled('no')).toBeTruthy();
 });

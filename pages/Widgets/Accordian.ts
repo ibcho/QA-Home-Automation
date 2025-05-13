@@ -1,8 +1,8 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { time } from "console";
 
 export default class AccordianPage {
     page: Page;
-
     whatIsLoremIpsum_dropDown: Locator;
     whatIsLoremIpsum_dropDownText: Locator;
     whereDoesItComeFrom_dropDown: Locator;
@@ -15,6 +15,7 @@ export default class AccordianPage {
 
     constructor(page: Page) {
         this.page = page;
+
         this.whatIsLoremIpsum_dropDown = page.locator('#section1Heading');
         this.whatIsLoremIpsum_dropDownText = page.locator('#section1Content > p').nth(0);
         this.whereDoesItComeFrom_dropDown = page.locator('#section2Heading');
@@ -26,46 +27,11 @@ export default class AccordianPage {
         this.longEstablishedFactParagraph = page.locator('#section3Content > p');
     }
 
-    async clickDropDown(dropDown: Locator) {
-        await dropDown.click();
+    async clickAccourdianSection(section: Locator): Promise<void>{
+        await section.click();
     }
 
-    async verifyText(locator: Locator, expectedText: string) {
-        const text = await locator.innerText();
-        if (text !== expectedText) {
-            throw new Error(`Expected text: ${expectedText}, but got: ${text}`);
-        }
-    }
-
-    async clickWhatIsLoremIpsum() {
-        await this.clickDropDown(this.whatIsLoremIpsum_dropDown);
-    }
-
-    async clickWhereDoesItComeFrom() {
-        await this.clickDropDown(this.whereDoesItComeFrom_dropDown);
-    }
-
-    async clickWhyDoweUseIt() {
-        await this.clickDropDown(this.whyDoweUseIt_dropDown);
-    }
-
-    async verifyWhatIsLoremIpsumText(expectedText: string) {
-        await this.verifyText(this.whatIsLoremIpsum_dropDownText, expectedText);
-    }
-
-    async verifyWhereDoesItComeFromText(expectedText: string) {
-        await this.verifyText(this.whereDoesItComeFrom_dropDownText, expectedText);
-    }
-
-    async verifyWhyDoweUseItText(expectedText: string) {
-        await this.verifyText(this.whyDoweUseIt_dropDownText, expectedText);
-    }
-
-    async verifyLoremIpsumParagraph(expectedText: string) {
-        await this.verifyText(this.loremIpsumParagraph, expectedText);
-    }
-
-    async verifyLongEstablishedFactParagraph(expectedText: string) {
-        await this.verifyText(this.longEstablishedFactParagraph, expectedText);
+    async verifyAccordiantText(sectionTextLocator: Locator, expedtedText: string): Promise<void>{
+        await expect(sectionTextLocator).toHaveText(expedtedText, { timeout: 5000 });
     }
 }

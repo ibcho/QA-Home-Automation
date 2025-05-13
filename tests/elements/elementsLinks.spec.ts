@@ -12,10 +12,6 @@ test('Verify all links functionalities', async ({ page }) => {
     await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToLinks();
-
-    // Verify static home link redirects to homepage
     await elementsLinksPage.clickStaticLinkHomeAndVerify();
-
-    // Verify dynamic home link redirects to homepage
     await elementsLinksPage.clickDynamicLinkHomeAndVerify();
 });

@@ -12,16 +12,8 @@ test('Verify all dynamic properties functionalities', async ({ page }) => {
     await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToDynamicProperties();
-
-    // Verify text with random ID is visible
     await elementsDynamicProperties.verifyTextWithRandomIdVisible();
-
-    // Verify button is enabled after five seconds
     await elementsDynamicProperties.verifyButtonEnabledAfterFiveSeconds();
-
-    // Verify button color changes to text-danger after five seconds
     await elementsDynamicProperties.verifyButtonColorChange();
-
-    // Verify button is visible after five seconds
     await elementsDynamicProperties.verifyButtonVisibleAfterFiveSeconds();
 });
