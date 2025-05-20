@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import path from 'path';
 import HomePage from '../../pages/HomePage';
 import ElementsPage from '../../pages/Elements/ElementsPage';
 import ElementsTextBoxPage from '../../pages/Elements/ElementsTextBoxPage';
@@ -105,9 +106,9 @@ test('Full Elements regression', async ({ page }) => {
     // --- Upload and Download Section ---
     const uploadAndDownloadPage = new ElementsUploadAndDownload(page);
     await elementsPage.navigateToUploadDownload();
-    const filePath = 'C:/Users/IbrahimGavazov/Apartament.png';
+    const filePath = path.resolve(__dirname, '../../testingFiles/sampleFile.txt');
     await uploadAndDownloadPage.uploadFile(filePath);
-    await uploadAndDownloadPage.verifyUploadedFile('Apartament.png');
+    await uploadAndDownloadPage.verifyUploadedFile('sampleFile.txt');
     const download = await uploadAndDownloadPage.downloadFile();
     await uploadAndDownloadPage.verifyDownloadedFile(download, 'sampleFile.txt');
 

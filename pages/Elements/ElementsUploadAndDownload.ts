@@ -16,11 +16,14 @@ export default class ElementsUploadAndDownloadPage {
     }
 
     async uploadFile(filePath: string) {
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`Upload file does not exist: ${filePath}`);
+        }
         await this.uploadInput.setInputFiles(filePath);
     }
 
-    async verifyUploadedFile(expectedFilePath: string) {
-        await expect(this.uploadedFilePath).toHaveText(`C:\\fakepath\\${expectedFilePath}`);
+    async verifyUploadedFile(expectedFileName: string) {
+        await expect(this.uploadedFilePath).toHaveText(`C:\\fakepath\\${expectedFileName}`);
     }
 
     async downloadFile() {
@@ -32,7 +35,12 @@ export default class ElementsUploadAndDownloadPage {
     }
 
     async verifyDownloadedFile(download, expectedFileName: string) {
-        const downloadPath = path.join(__dirname, expectedFileName);
+        // Save to a dedicated downloads directory in the project root
+        const downloadsDir = path.resolve(process.cwd(), 'downloads');
+        if (!fs.existsSync(downloadsDir)) {
+            fs.mkdirSync(downloadsDir);
+        }
+        const downloadPath = path.join(downloadsDir, expectedFileName);
         await download.saveAs(downloadPath);
         expect(fs.existsSync(downloadPath)).toBe(true);
     }
