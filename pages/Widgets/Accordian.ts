@@ -15,7 +15,6 @@ export default class AccordianPage {
 
     constructor(page: Page) {
         this.page = page;
-
         this.whatIsLoremIpsum_dropDown = page.locator('#section1Heading');
         this.whatIsLoremIpsum_dropDownText = page.locator('#section1Content > p').nth(0);
         this.whereDoesItComeFrom_dropDown = page.locator('#section2Heading');
