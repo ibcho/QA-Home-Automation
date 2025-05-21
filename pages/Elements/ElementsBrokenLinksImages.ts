@@ -32,7 +32,14 @@ export default class ElementsBrokenLinksImages {
     // Method to click the valid link and verify the URL
     async clickValidLinkAndVerify() {
         await this.validLink.click();
-        await expect(this.page).toHaveURL('https://demoqa.com/');
+
+        await this.page.evaluate(() => {
+             const vignette = document.querySelector('[id^="google_vignette"]');
+             if (vignette) {
+                 vignette.remove();
+             }
+        });
+        await expect(this.page).toHaveURL(/demoqa\.com\/?$/);
     }
 
     // Method to click the broken link and verify the URL
