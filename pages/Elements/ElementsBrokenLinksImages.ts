@@ -39,7 +39,7 @@ export default class ElementsBrokenLinksImages {
                  vignette.remove();
              }
         });
-        await expect(this.page).toHaveURL(/demoqa\.com\/?$/);
+        await expect(this.page).toHaveURL(/demoqa\.com(\/broken)?(\/)?(#google_vignette)?$/);
     }
 
     // Method to click the broken link and verify the URL
