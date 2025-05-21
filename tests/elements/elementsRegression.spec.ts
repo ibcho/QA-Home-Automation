@@ -124,6 +124,8 @@ test('Full Elements regression', async ({ page }) => {
     await brokenLinksImagesPage.verifyValidImageVisible();
     await brokenLinksImagesPage.verifyBrokenImageNotVisible();
     await brokenLinksImagesPage.clickValidLinkAndVerify();
+    // reset the state of the page
+    await homePage.loadHomePage();
     await homePage.gotoElements();
     await elementsPage.navigateToBrokenLinksImages();
     await brokenLinksImagesPage.clickBrokenLink();
