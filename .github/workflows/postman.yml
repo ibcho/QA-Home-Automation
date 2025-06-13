@@ -1,4 +1,4 @@
-name: Postman tests
+name: Postman Tests
 
 on:
   push:
