@@ -3,7 +3,7 @@ name: Run API and UI Tests
 on:
   push:
     branches:
-      - ci-postman-ui-tests
+      - refs/heads/tools-qa-postman-ui-tests 
   pull_request:
     branches:
       - main
@@ -19,7 +19,7 @@ jobs:
         run: npm install -g newman
 
       - name: Run Postman collection
-        run: newman run ./postman_collection/GroceryStoreAPI.postman_collection
+        run: newman run ./postman_collection/GroceryStoreAPI.postman_collection.json
 
   ui-tests:
     needs: postman-tests
