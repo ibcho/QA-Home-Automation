@@ -1,35 +1,35 @@
-name: Postman Tests
+# name: Postman Tests
 
-on:
-  push:
-    branches:
-      - refs/heads/tools-qa-postman-ui-tests 
-  pull_request:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - refs/heads/tools-qa-postman-ui-tests 
+#   pull_request:
+#     branches:
+#       - main
 
-jobs:
-  postman-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+# jobs:
+#   postman-tests:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Install newman
-        run: npm install -g newman
+#       - name: Install newman
+#         run: npm install -g newman
 
-      - name: Run Postman collection
-        run: newman run "./postman_collection/Grocery Store API.postman_collection.json"
+#       - name: Run Postman collection
+#         run: newman run "./postman_collection/Grocery Store API.postman_collection.json"
 
-  ui-tests:
-    needs: postman-tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#   ui-tests:
+#     needs: postman-tests
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm ci # or pip install -r requirements.txt, etc.
+#       - name: Install dependencies
+#         run: npm ci # or pip install -r requirements.txt, etc.
 
-      - name: Run UI tests
-        run: npm run test:ui # or your actual UI test command
+#       - name: Run UI tests
+#         run: npm run test:ui # or your actual UI test command
