@@ -16,7 +16,7 @@ export default class Slider {
         return value;
     }
 
-    // Method to drag the slider to a specific value
+    // Method to set the slider to a specific value using a click at the calculated position
     async dragSliderToValue(value: number) {
         const slider = await this.sliderRange.elementHandle();
         if (!slider) throw new Error('Slider element not found');
@@ -28,20 +28,20 @@ export default class Slider {
         const max = parseFloat(await slider.getAttribute('max') || '100');
         const sliderWidth = boundingBox.width;
 
-        // Calculate the x-coordinate for the desired value
+        // Calculate the x offset for the desired value
         const valueRatio = (value - min) / (max - min);
-        const targetX = boundingBox.x + valueRatio * sliderWidth;
-        for(let attempt = 0; attempt < 2; attempt++) {
-        // Drag the slider to the target position
-        await slider.hover();
-        await this.sliderRange.page().mouse.down();
-        await this.sliderRange.page().mouse.move(targetX, boundingBox.y + boundingBox.height / 2);
-        await this.sliderRange.page().mouse.up();
+        const xOffset = valueRatio * sliderWidth;
 
-        const currentvalue = await this.getSliderValue();
-            if (currentvalue === value.toString()) {
-                break; // Exit the loop if the value is set correctly
+        // Click at the calculated position (relative to the slider's left edge)
+        await this.sliderRange.click({
+            position: {
+                x: xOffset,
+                y: boundingBox.height / 2
             }
-        }
+        });
+    }
+
+    get rangeLocator() {
+        return this.sliderRange;
     }
 }

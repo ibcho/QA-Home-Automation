@@ -102,9 +102,4 @@ test('Complete Alerts, Frame & Windows Regression Test', async ({ page, context 
         // Verify child frame content
         await nestedFramesPage.verifyChildFrameText('Child Iframe');
     });
-});
-
-// Close browser after test completion
-test.afterAll(async ({ browser }) => {
-    await browser.close();
 }); 

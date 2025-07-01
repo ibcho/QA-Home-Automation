@@ -1,28 +1,19 @@
-import { test, BrowserContext, Page, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/HomePage';
 import Widgets from '../../pages/Widgets/Widgets';
 import DatePicker from '../../pages/Widgets/DatePicker';
-
-let context: BrowserContext;
-let page: Page;
 
 let homePage: HomePage;
 let widgets: Widgets;
 let datePicker: DatePicker;
 
-test.beforeAll(async ({ browser }) => {
-  context = await browser.newContext();
-  page = await context.newPage();
+test.beforeEach(async ({ page }) => {
   homePage = new HomePage(page);
   widgets = new Widgets(page);
   datePicker = new DatePicker(page);
 });
 
 test('Verify date and time pickers', async ({ page }) => {
-    const homePage = new HomePage(page);
-    const widgets = new Widgets(page);
-    const datePicker = new DatePicker(page);
-
     await homePage.loadHomePage();
     await homePage.gotoWidgets();
     await widgets.navigateToDatePicker();
@@ -38,10 +29,5 @@ test('Verify date and time pickers', async ({ page }) => {
     const dateTimeValue = await datePicker.getDateTimeValue();
     expect(dateTimeValue).toMatch(/May 12, 2025/);
     expect(dateTimeValue).toContain(time);
-});
-
-test.afterAll(async () => {
-    // Close the browser context
-    await context.close();
 });
 

@@ -3,12 +3,12 @@ import HomePage from '../../pages/HomePage';
 import Widgets from '../../pages/Widgets/Widgets';
 import Menu from '../../pages/Widgets/Menu';
 
-let homePage: HomePage;
-let widgets: Widgets;
-let menu: Menu;
-
 test.describe('Menu Widget', () => {
-    test.beforeAll(async ({ page }) => {
+    let homePage: HomePage;
+    let widgets: Widgets;
+    let menu: Menu;
+
+    test.beforeEach(async ({ page }) => {
         homePage = new HomePage(page);
         widgets = new Widgets(page);
         menu = new Menu(page);

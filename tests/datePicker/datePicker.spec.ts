@@ -173,8 +173,3 @@ test('Date Picker Edge Cases and Error Handling', async ({ page }) => {
         expect(emptyDateTimeValue).toBe('');
     });
 });
-
-// Close browser after test completion
-test.afterAll(async ({ browser }) => {
-    await browser.close();
-});

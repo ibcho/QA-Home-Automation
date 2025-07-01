@@ -20,8 +20,14 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Verify slider change', async ({ page }) => {
+  const min = await slider.rangeLocator.getAttribute('min');
+  const max = await slider.rangeLocator.getAttribute('max');
+  const step = await slider.rangeLocator.getAttribute('step');
+  console.log({ min, max, step });
+
   const inputValue = 50; // Set the slider value to 50
   await slider.dragSliderToValue(inputValue);
   const sliderValue = await slider.getSliderValue();
+  console.log('Slider value after setting:', sliderValue);
   expect(Number(sliderValue)).toBe(inputValue);
 });
