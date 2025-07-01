@@ -19,7 +19,7 @@ jobs:
         run: npm install -g newman
 
       - name: Run Postman collection
-        run: newman run ./postman_collection/GroceryStoreAPI.postman_collection.json
+        run: newman run "./postman_collection/Grocery Store API.postman_collection.json"
 
   ui-tests:
     needs: postman-tests
