@@ -20,7 +20,7 @@ export default class HomePage extends BasePage {
      * Load the home page and wait for it to be ready
      */
     async loadHomePage(): Promise<void> {
-        await this.page.goto("https://demoqa.com/");
+        await this.page.goto("https://demoqa.com/", { timeout: 120000, waitUntil: 'load' });
         await this.waitForPageLoad();
     }
 
