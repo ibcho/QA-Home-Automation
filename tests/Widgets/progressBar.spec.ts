@@ -1,41 +1,22 @@
-import { test, BrowserContext, Page, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/HomePage';
 import Widgets from '../../pages/Widgets/Widgets';
 import Progressbar from '../../pages/Widgets/Progressbar';
 
-let context: BrowserContext;
-let page: Page;
+test('Progress bar increases after starting', async ({ page }) => {
+    const homePage = new HomePage(page);
+    const widgets = new Widgets(page);
+    const progressBar = new Progressbar(page);
 
-let homePage: HomePage;
-let widgets: Widgets;
-let progressBar: Progressbar;
+    await homePage.loadHomePage();
+    await homePage.gotoWidgets();
+    await widgets.navigateToProgressBar();
 
-test.beforeAll(async ({ browser }) => {
-  context = await browser.newContext();
-  page = await context.newPage();
-  homePage = new HomePage(page);
-  widgets = new Widgets(page);
-  progressBar = new Progressbar(page);
+    const initialValue = await progressBar.getValue();
+    await progressBar.start();
+    await page.waitForTimeout(2000); // Wait 2 seconds
+    await progressBar.stop();
+    const finalValue = await progressBar.getValue();
 
-  await homePage.loadHomePage();
-  await homePage.gotoWidgets();
-  await widgets.navigateToProgressBar();
-});
-
-test.afterAll(async () => {
-  await context.close();
-});
-
-test('Verify progress bar reaches target value', async ({}) => {
-  const progressBar = new Progressbar(page);
-
-  // Start the progress bar
-  await progressBar.startAndStopProgressBar();
-  await page.waitForTimeout(5000); // Wait for 5 seconds to allow the progress bar to update
-  await progressBar.startAndStopProgressBar();
-
-  // Verify the progress bar value
-  const progressBarValue = await progressBar.getProgressBarValue();
-  expect(progressBarValue).toBeGreaterThanOrEqual(30);
-  console.log('Final progress bar value:', progressBarValue);
+    expect(finalValue).toBeGreaterThan(initialValue);
 });

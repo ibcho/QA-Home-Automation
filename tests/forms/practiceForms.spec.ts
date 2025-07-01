@@ -1,60 +1,86 @@
-// import { test, expect } from '@playwright/test';
-// import PracticeFormPage from '../../pages/Forms/PracticeFormPage';
-// import HomePage from '../../pages/HomePage';
-// import path from 'path';
+import { test, expect } from '@playwright/test';
+import PracticeFormPage from '../../pages/Forms/PracticeFormPage';
+import HomePage from '../../pages/HomePage';
+import path from 'path';
 
-// let homePage: HomePage;
-// let practiceFormPage: PracticeFormPage;
+// Centralized test data
+const TEST_DATA = {
+    firstName: 'Ibrahim',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    gender: 'Male' as 'Male' | 'Female' | 'Other',
+    mobile: '1234567890',
+    dob: { month: 'July', year: '1990', day: '07' },
+    subjects: 'Maths',
+    hobbies: ['hobbies-checkbox-1', 'hobbies-checkbox-2'],
+    picture: path.resolve(__dirname, '../../testingFiles/11.jpg'),
+    address: '123 Main Street, Kaimak chalan',
+    state: 'NCR',
+    city: 'Noida',
+};
 
-// test.beforeAll(async ({ page }) => {
-//     homePage = new HomePage(page);
-//     practiceFormPage = new PracticeFormPage(page);
+let homePage: HomePage;
+let practiceFormPage: PracticeFormPage;
 
-//     // Navigate to the home page
-//     await homePage.loadHomePage();
+test.describe('Practice Form Tests', () => {
+    test.beforeEach(async ({ page }) => {
+        homePage = new HomePage(page);
+        practiceFormPage = new PracticeFormPage(page);
 
-//     // Navigate to the Forms section
-//     await homePage.gotoForms();
-//     await practiceFormPage.selectPracticeForm();
-// });
+        await test.step('Navigate to Practice Form', async () => {
+            await homePage.loadHomePage();
+            await homePage.gotoForms();
+            await practiceFormPage.selectPracticeForm();
+        });
+    });
 
-// test('Verify mandatory fields validation and form submission with valid data', async () => {
-//     // Step 1: Verify mandatory fields validation
-//     await practiceFormPage.clickSubmitButton();
+    test('Should show validation errors for empty mandatory fields', async () => {
+        await test.step('Submit empty form and check validation', async () => {
+            await practiceFormPage.clickSubmitButton();
 
-//     // Verify validation messages
-//     const firstNameValidation = practiceFormPage.page.locator('#firstName:invalid');
-//     const lastNameValidation = practiceFormPage.page.locator('#lastName:invalid');
-//     const mobileValidation = practiceFormPage.page.locator('#userNumber:invalid');
-//     const genderValidation = practiceFormPage.page.locator('input[name="gender"]:invalid');
+            // Check all required fields for validation
+            await expect(practiceFormPage.getFirstNameValidation()).toBeVisible();
+            await expect(practiceFormPage.getLastNameValidation()).toBeVisible();
+            await expect(practiceFormPage.getMobileValidation()).toBeVisible();
+            // Gender radio buttons: at least one should be required
+            await expect(practiceFormPage.getGenderValidation()).toHaveCount(3);
+        });
+    });
 
-//     await expect(firstNameValidation).toBeVisible();
-//     await expect(mobileValidation).toBeVisible();
-//     await expect(lastNameValidation).toBeVisible();
-//     await expect(genderValidation).toHaveCount(3); // All radio buttons should be invalid
+    test('Should submit form with valid data and show confirmation modal', async () => {
+        await test.step('Fill out the form with valid data', async () => {
+            await practiceFormPage.fillFirstName(TEST_DATA.firstName);
+            await practiceFormPage.fillLastName(TEST_DATA.lastName);
+            await practiceFormPage.fillUserEmail(TEST_DATA.email);
+            await practiceFormPage.selectGender(TEST_DATA.gender);
+            await practiceFormPage.fillMobile(TEST_DATA.mobile);
+            await practiceFormPage.fillDateOfBirth(TEST_DATA.dob.month, TEST_DATA.dob.year, TEST_DATA.dob.day);
+            await practiceFormPage.fillSubjects(TEST_DATA.subjects);
+            await practiceFormPage.selectHobbies(TEST_DATA.hobbies);
+            await practiceFormPage.uploadPicture(TEST_DATA.picture);
+            await practiceFormPage.fillCurrentAddress(TEST_DATA.address);
+            await practiceFormPage.selectState(TEST_DATA.state);
+            await practiceFormPage.selectCity(TEST_DATA.city);
+        });
 
-//     // Step 2: Fill the form with valid data and submit
-//     // Fill in personal details
-//     await practiceFormPage.fillFirstName('Ibrahim');
-//     await practiceFormPage.fillLastName('Doe');
-//     await practiceFormPage.fillUserEmail('john.doe@example.com');
-//     await practiceFormPage.selectGender('Male');
-//     await practiceFormPage.fillMobile('1234567890');
-//     await practiceFormPage.fillDateOfBirth('July', '1990', '07');
-//     await practiceFormPage.fillSubjects('Maths');
-//     await practiceFormPage.selectHobbies(['hobbies-checkbox-1', 'hobbies-checkbox-2']); // Replace with actual IDs or labels
+        await test.step('Submit the form and verify confirmation modal', async () => {
+            await practiceFormPage.clickSubmitButton();
+            await practiceFormPage.verifyFormSubmission();
 
-//     const picturePath = path.resolve(__dirname, '../../testingFiles/11.jpg');
-//     await practiceFormPage.uploadPicture(picturePath);
-
-//     // Fill current address
-//     await practiceFormPage.fillCurrentAddress('123 Main Street, Kaimak chalan');
-
-//     // Select state and city
-//     await practiceFormPage.selectState('NCR');
-//     await practiceFormPage.selectCity('Noida');
-
-//     // Verify form submission
-//     await practiceFormPage.clickSubmitButton();
-//     await practiceFormPage.vefyFormSubmission();
-// });
+            // Assert that the modal contains submitted data
+            const modal = practiceFormPage.getModalContent();
+            await expect(modal).toContainText(TEST_DATA.firstName);
+            await expect(modal).toContainText(TEST_DATA.lastName);
+            await expect(modal).toContainText(TEST_DATA.email);
+            await expect(modal).toContainText(TEST_DATA.gender);
+            await expect(modal).toContainText(TEST_DATA.mobile);
+            await expect(modal).toContainText(TEST_DATA.subjects);
+            await expect(modal).toContainText('Sports'); // Assuming hobbies-checkbox-1 is Sports
+            await expect(modal).toContainText('Reading'); // Assuming hobbies-checkbox-2 is Reading
+            await expect(modal).toContainText('11.jpg');
+            await expect(modal).toContainText(TEST_DATA.address);
+            await expect(modal).toContainText(TEST_DATA.state);
+            await expect(modal).toContainText(TEST_DATA.city);
+        });
+    });
+});

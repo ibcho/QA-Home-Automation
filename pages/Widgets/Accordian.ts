@@ -1,5 +1,4 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { time } from "console";
 
 export default class AccordianPage {
     page: Page;
@@ -7,6 +6,9 @@ export default class AccordianPage {
     whatIsLoremIpsum_dropDownText: Locator;
     whereDoesItComeFrom_dropDown: Locator;
     whereDoesItComeFrom_dropDownText: Locator;
+    whereDoesItComeFrom_allText: Locator;
+    whereDoesItComeFrom_firstParagraph: Locator;
+    whereDoesItComeFrom_secondParagraph: Locator;
     whyDoweUseIt_dropDown: Locator;
     whyDoweUseIt_dropDownText: Locator;
 
@@ -19,6 +21,9 @@ export default class AccordianPage {
         this.whatIsLoremIpsum_dropDownText = page.locator('#section1Content > p').nth(0);
         this.whereDoesItComeFrom_dropDown = page.locator('#section2Heading');
         this.whereDoesItComeFrom_dropDownText = page.locator('#section2Content > p').nth(0);
+        this.whereDoesItComeFrom_allText = page.locator('#section2Content');
+        this.whereDoesItComeFrom_firstParagraph = page.locator('#section2Content > p').nth(0);
+        this.whereDoesItComeFrom_secondParagraph = page.locator('#section2Content > p').nth(1);
         this.whyDoweUseIt_dropDown = page.locator('#section3Heading');
         this.whyDoweUseIt_dropDownText = page.locator('#section3Content > p').nth(0);
 
@@ -32,5 +37,9 @@ export default class AccordianPage {
 
     async verifyAccordiantText(sectionTextLocator: Locator, expedtedText: string): Promise<void>{
         await expect(sectionTextLocator).toHaveText(expedtedText, { timeout: 5000 });
+    }
+
+    async verifyAccordiantContent(sectionContentLocator: Locator, expectedText: string): Promise<void>{
+        await expect(sectionContentLocator).toContainText(expectedText, { timeout: 5000 });
     }
 }

@@ -1,131 +1,245 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { BasePage } from "../BasePage";
 
-export default class PracticeFormPage {
-    readonly page: Page;
+export default class PracticeFormPage extends BasePage {
+    // Form input fields
+    private readonly firstName: Locator;
+    private readonly lastName: Locator;
+    private readonly userEmail: Locator;
+    private readonly mobile: Locator;
+    private readonly dateOfBirth: Locator;
+    private readonly subjects: Locator;
+    private readonly picture: Locator;
+    private readonly currentAddress: Locator;
+    private readonly submitButton: Locator;
 
-    readonly firstName: Locator;
-    readonly lastName: Locator;
-    readonly userEmail: Locator;
-    readonly genderMale: Locator;
-    readonly genderFemale: Locator;
-    readonly genderOther: Locator;
-    readonly mobile: Locator;
-    readonly dateOfBirth: Locator;
-    readonly subjects: Locator;
-    readonly hobbies: Locator;
-    readonly picture: Locator;
-    readonly currentAddress: Locator;
-    readonly state: Locator;
-    readonly city: Locator;
-    readonly submitButton: Locator;
+    // Gender radio buttons
+    private readonly genderMale: Locator;
+    private readonly genderFemale: Locator;
+    private readonly genderOther: Locator;
 
-    readonly cityDropdown: Locator;
+    // Dropdown selectors
+    private readonly state: Locator;
+    private readonly city: Locator;
+
+    // Hobbies checkboxes
+    private readonly hobbies: Locator;
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
+        
+        // Initialize form fields
         this.firstName = page.locator('#firstName');
         this.lastName = page.locator('#lastName');
         this.userEmail = page.locator('#userEmail');
+        this.mobile = page.locator('#userNumber');
+        this.dateOfBirth = page.locator('#dateOfBirthInput');
+        this.subjects = page.locator('#subjectsInput');
+        this.picture = page.locator('#uploadPicture');
+        this.currentAddress = page.locator('#currentAddress');
+        this.submitButton = page.locator('#submit');
 
+        // Initialize gender radio buttons
         this.genderMale = page.locator('input[name="gender"][value="Male"]');
         this.genderFemale = page.locator('input[name="gender"][value="Female"]');
         this.genderOther = page.locator('input[name="gender"][value="Other"]');
 
-        this.mobile = page.locator('#userNumber');
-        this.dateOfBirth = page.locator('#dateOfBirthInput');
-        this.subjects = page.locator('#subjectsInput');
+        // Initialize dropdown selectors
+        this.state = page.locator('#state svg');
+        this.city = page.locator('#city svg');
+
+        // Initialize hobbies
         this.hobbies = page.locator('.custom-checkbox');
-        this.picture = page.locator('#uploadPicture');
-        this.currentAddress = page.locator('#currentAddress');
-        this.state = page.locator('#state svg')
-        this.city = page.locator('#city svg')
-  
-        this.submitButton = page.locator('#submit');
     }
 
-    async selectPracticeForm(){
-        await this.page.click('text=Practice Form');
+    /**
+     * Navigate to Practice Form section
+     */
+    async selectPracticeForm(): Promise<void> {
+        await this.safeClick(this.page.locator('text=Practice Form'));
     }
 
-    async fillFirstName(firstName: string) {
-        await this.firstName.fill(firstName);
+    /**
+     * Fill first name field
+     */
+    async fillFirstName(firstName: string): Promise<void> {
+        await this.safeFill(this.firstName, firstName);
     }
 
-    async fillLastName(lastName: string) {
-        await this.lastName.fill(lastName);
+    /**
+     * Fill last name field
+     */
+    async fillLastName(lastName: string): Promise<void> {
+        await this.safeFill(this.lastName, lastName);
     }
 
-    async fillUserEmail(userEmail: string) {
-        await this.userEmail.fill(userEmail);
+    /**
+     * Fill email field
+     */
+    async fillUserEmail(userEmail: string): Promise<void> {
+        await this.safeFill(this.userEmail, userEmail);
     }
 
-    // Method to select a gender
-    async selectGender(gender: 'Male' | 'Female' | 'Other') {
-        const labelLocator = this.page.locator(`label[for="gender-radio-${gender === 'Male' ? 1 : gender === 'Female' ? 2 : 3}"]`);
-        await labelLocator.waitFor({ state: 'visible' }); // Wait for the label to be visible
-        await labelLocator.click(); // Click the label
+    /**
+     * Select gender with improved error handling
+     */
+    async selectGender(gender: 'Male' | 'Female' | 'Other'): Promise<void> {
+        const genderMap = {
+            'Male': 1,
+            'Female': 2,
+            'Other': 3
+        };
+        
+        const labelLocator = this.page.locator(`label[for="gender-radio-${genderMap[gender]}"]`);
+        await this.safeClick(labelLocator);
     }
 
-    async fillMobile(mobile: string) {
-        await this.mobile.fill(mobile);
+    /**
+     * Fill mobile number field
+     */
+    async fillMobile(mobile: string): Promise<void> {
+        await this.safeFill(this.mobile, mobile);
     }
 
-    async fillDateOfBirth(month: string, year: string, day: string) {
-        await this.dateOfBirth.click();
+    /**
+     * Fill date of birth with improved error handling
+     */
+    async fillDateOfBirth(month: string, year: string, day: string): Promise<void> {
+        await this.safeClick(this.dateOfBirth);
 
         const monthDropdown = this.page.locator('.react-datepicker__month-select');
         await monthDropdown.selectOption({ label: month });
 
-        // Select the year
         const yearDropdown = this.page.locator('.react-datepicker__year-select');
         await yearDropdown.selectOption({ label: year });
 
-        // Select the day
         const dayLocator = this.page.locator(`.react-datepicker__day--0${day}`).first();
-        await dayLocator.click();
+        await this.safeClick(dayLocator);
     }
 
-    async fillSubjects(subjects: string) {
-        await this.subjects.fill(subjects); 
-        await this.subjects.press('Enter'); 
-    }
-
-    async selectHobbies(hobbies: string[]) {
-        for (const hobby of hobbies) {
-            const hobbyLocator = this.page.locator(`.custom-checkbox label[for="${hobby}"]`);
-            await hobbyLocator.waitFor({ state: 'visible' });
-            await hobbyLocator.click({ force: true });
+    /**
+     * Fill subjects field with improved error handling
+     */
+    async fillSubjects(subjects: string): Promise<void> {
+        try {
+            await this.safeFill(this.subjects, subjects);
+            await this.subjects.press('Enter');
+        } catch (error) {
+            console.log(`Error filling subjects, trying alternative approach: ${error}`);
+            // Alternative approach: click and type
+            await this.safeClick(this.subjects);
+            await this.page.keyboard.type(subjects);
+            await this.page.keyboard.press('Enter');
         }
     }
 
-    async uploadPicture(picturePath: string) {
+    /**
+     * Select hobbies with improved error handling
+     */
+    async selectHobbies(hobbies: string[]): Promise<void> {
+        for (const hobby of hobbies) {
+            const hobbyLocator = this.page.locator(`.custom-checkbox label[for="${hobby}"]`);
+            await this.safeClick(hobbyLocator);
+        }
+    }
+
+    /**
+     * Upload picture file
+     */
+    async uploadPicture(picturePath: string): Promise<void> {
+        await this.waitForElement(this.picture);
         await this.picture.setInputFiles(picturePath);
     }
 
-    async fillCurrentAddress(currentAddress: string) {
-        await this.currentAddress.fill(currentAddress);
-    }
-    
-    async selectState(state: string) {
-        await this.state.click({ force: true });
-        const stateOption = this.page.getByText(`${state}`, { exact: true });
-        await stateOption.waitFor({ state: 'visible' });
-        await stateOption.click();
+    /**
+     * Fill current address field
+     */
+    async fillCurrentAddress(currentAddress: string): Promise<void> {
+        await this.safeFill(this.currentAddress, currentAddress);
     }
 
-    async selectCity(city: string) {
-        await this.city.click({ force: true });
-        const cityOption = this.page.getByText(`${city}`, { exact: true });
-        await cityOption.waitFor({ state: 'visible' }); 
-        await cityOption.click(); 
+    /**
+     * Select state from dropdown
+     */
+    async selectState(state: string): Promise<void> {
+        await this.safeClick(this.state);
+        const stateOption = this.page.getByText(state, { exact: true });
+        await this.safeClick(stateOption);
     }
 
-    async clickSubmitButton() {
-        await this.submitButton.click();
+    /**
+     * Select city from dropdown
+     */
+    async selectCity(city: string): Promise<void> {
+        await this.safeClick(this.city);
+        const cityOption = this.page.getByText(city, { exact: true });
+        await this.safeClick(cityOption);
     }
 
-    async vefyFormSubmission() {
+    /**
+     * Click submit button
+     */
+    async clickSubmitButton(): Promise<void> {
+        await this.safeClick(this.submitButton);
+    }
+
+    /**
+     * Verify form submission success (FIXED: was "vefyFormSubmission")
+     */
+    async verifyFormSubmission(): Promise<void> {
         const successMessage = this.page.locator('#example-modal-sizes-title-lg');
-        await expect(successMessage).toHaveText('Thanks for submitting the form');  
-    } 
+        await this.verifyText(successMessage, 'Thanks for submitting the form');
+    }
+
+    /**
+     * Fill complete form with all required data
+     */
+    async fillCompleteForm(formData: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        gender: 'Male' | 'Female' | 'Other';
+        mobile: string;
+        dob: { month: string; year: string; day: string };
+        subjects: string;
+        hobbies: string[];
+        picturePath: string;
+        address: string;
+        state: string;
+        city: string;
+    }): Promise<void> {
+        await this.fillFirstName(formData.firstName);
+        await this.fillLastName(formData.lastName);
+        await this.fillUserEmail(formData.email);
+        await this.selectGender(formData.gender);
+        await this.fillMobile(formData.mobile);
+        await this.fillDateOfBirth(formData.dob.month, formData.dob.year, formData.dob.day);
+        await this.fillSubjects(formData.subjects);
+        await this.selectHobbies(formData.hobbies);
+        await this.uploadPicture(formData.picturePath);
+        await this.fillCurrentAddress(formData.address);
+        await this.selectState(formData.state);
+        await this.selectCity(formData.city);
+    }
+
+    // Validation element getters for testing
+    getFirstNameValidation() {
+        return this.page.locator('#firstName:invalid');
+    }
+
+    getLastNameValidation() {
+        return this.page.locator('#lastName:invalid');
+    }
+
+    getMobileValidation() {
+        return this.page.locator('#userNumber:invalid');
+    }
+
+    getGenderValidation() {
+        return this.page.locator('input[name="gender"]:invalid');
+    }
+
+    getModalContent() {
+        return this.page.locator('.modal-content');
+    }
 }

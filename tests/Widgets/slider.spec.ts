@@ -1,18 +1,15 @@
-import { test, BrowserContext, Page, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/HomePage';
 import Widgets from '../../pages/Widgets/Widgets';
 import Slider from '../../pages/Widgets/Slider';
-
-let context: BrowserContext;
-let page: Page;
 
 let homePage: HomePage;
 let widgets: Widgets;
 let slider: Slider;
 
-test.beforeAll(async ({ browser }) => {
-  context = await browser.newContext();
-  page = await context.newPage();
+// Use per-test isolation
+
+test.beforeEach(async ({ page }) => {
   homePage = new HomePage(page);
   widgets = new Widgets(page);
   slider = new Slider(page);
@@ -22,17 +19,9 @@ test.beforeAll(async ({ browser }) => {
   await widgets.navigateToSlider();
 });
 
-test.afterAll(async () => {
-    // Close the browser context
-    await context.close();
-});
-
-test('Verify slider change', async () => {
+test('Verify slider change', async ({ page }) => {
   const inputValue = 50; // Set the slider value to 50
-
-  // Drag the slider to the desired value
   await slider.dragSliderToValue(inputValue);
-
-  // Get the current slider value
   const sliderValue = await slider.getSliderValue();
+  expect(Number(sliderValue)).toBe(inputValue);
 });

@@ -4,7 +4,7 @@ export default class AutoCompletePage {
     private autoCompleteInput: Locator;
 
     constructor(page: Page) {
-        this.autoCompleteInput = page.locator('#autoCompleteSingleContainer input');  
+        this.autoCompleteInput = page.locator('#autoCompleteSingleContainer input');
     }
 
     async enterTextInAutoCompleteInput(text: string) {
@@ -13,5 +13,13 @@ export default class AutoCompletePage {
 
     async getAutoCompleteResultText() {
         return await this.autoCompleteInput.inputValue();
+    }
+
+    async clearInput() {
+        await this.autoCompleteInput.clear();
+    }
+
+    async waitForInputToBeVisible() {
+        await this.autoCompleteInput.waitFor({ state: 'visible' });
     }
 }

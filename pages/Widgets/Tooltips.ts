@@ -1,79 +1,110 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "../BasePage";
 
-export default class Tooltips {
+export default class Tooltips extends BasePage {
+    // Button tooltip elements
     private readonly hoverMeToSeeButton: Locator;
     private readonly hoverMeToSeeButtonToolTip: Locator;
 
-    private readonly hoverMeToSeeTextBoxLocator: Locator;
+    // Text field tooltip elements
+    private readonly hoverMeToSeeTextBox: Locator;
     private readonly hoverMeToSeeTextBoxToolTip: Locator;
 
-    private readonly hoverOver_Contrary: Locator;
-    private readonly hoverOver_ContraryToolTip: Locator;
+    // Contrary text tooltip elements
+    private readonly hoverOverContrary: Locator;
+    private readonly hoverOverContraryToolTip: Locator;
 
-    private readonly overOver_SectionNumber: Locator;
-    private readonly overOver_SectionNumberToolTip: Locator;
+    // Section number tooltip elements
+    private readonly hoverOverSectionNumber: Locator;
+    private readonly hoverOverSectionNumberToolTip: Locator;
 
     constructor(page: Page) {
-        this.hoverMeToSeeButton = page.getByRole('button', { name: 'Hover me to see' })
-        this.hoverMeToSeeButtonToolTip = page.getByText('You hovered over the Button') 
-
-        this.hoverMeToSeeTextBoxLocator = page.getByPlaceholder("Hover me to see");
-        this.hoverMeToSeeTextBoxToolTip = page.getByText('You hovered over the text field')
-
-        this.hoverOver_Contrary = page.locator("text=Contrary");
-        this.hoverOver_ContraryToolTip = page.getByText('You hovered over the Contrary')
+        super(page);
         
-        this.overOver_SectionNumber = page.locator("text=1").first();
-        this.overOver_SectionNumberToolTip = page.getByText('You hovered over the 1.10.32')
+        // Initialize button tooltip elements
+        this.hoverMeToSeeButton = page.getByRole('button', { name: 'Hover me to see' });
+        this.hoverMeToSeeButtonToolTip = page.getByText('You hovered over the Button');
 
+        // Initialize text field tooltip elements
+        this.hoverMeToSeeTextBox = page.getByPlaceholder("Hover me to see");
+        this.hoverMeToSeeTextBoxToolTip = page.getByText('You hovered over the text field');
+
+        // Initialize contrary text tooltip elements
+        this.hoverOverContrary = page.locator("text=Contrary");
+        this.hoverOverContraryToolTip = page.getByText('You hovered over the Contrary');
+
+        // Initialize section number tooltip elements
+        this.hoverOverSectionNumber = page.locator("text=1").first();
+        this.hoverOverSectionNumberToolTip = page.getByText('You hovered over the 1.10.32');
     }
 
-    async verifyHoverMeToSeeButtonPopUp(){
+    /**
+     * Verify button tooltip appears on hover
+     */
+    async verifyButtonTooltip(): Promise<void> {
         await this.hoverMeToSeeButton.hover();
-        await this.hoverMeToSeeButtonToolTip.waitFor({ state: "visible", timeout: 5000 });
-    
-        const isVisible = await this.hoverMeToSeeButtonToolTip.isVisible();
+        await this.waitForElement(this.hoverMeToSeeButtonToolTip, 5000);
+
+        const isVisible = await this.isVisible(this.hoverMeToSeeButtonToolTip);
         expect(isVisible).toBe(true);
 
-        const tooltipText = await this.hoverMeToSeeButtonToolTip.textContent();
+        const tooltipText = await this.getText(this.hoverMeToSeeButtonToolTip);
         expect(tooltipText).toBe('You hovered over the Button');
-        console.log("Tooltip text is: " + tooltipText);
+        console.log("Button tooltip text: " + tooltipText);
     }
 
-    async verifyHoverMeToSeTextBoxField(){
-        await this.hoverMeToSeeTextBoxLocator.hover();
-        await this.hoverMeToSeeTextBoxToolTip.waitFor({ state: "visible", timeout: 5000 });
-    
-        const isVisible = await this.hoverMeToSeeTextBoxToolTip.isVisible();
+    /**
+     * Verify text field tooltip appears on hover
+     */
+    async verifyTextFieldTooltip(): Promise<void> {
+        await this.hoverMeToSeeTextBox.hover();
+        await this.waitForElement(this.hoverMeToSeeTextBoxToolTip, 5000);
+
+        const isVisible = await this.isVisible(this.hoverMeToSeeTextBoxToolTip);
         expect(isVisible).toBe(true);
 
-        const tooltipText = await this.hoverMeToSeeTextBoxToolTip.textContent();
+        const tooltipText = await this.getText(this.hoverMeToSeeTextBoxToolTip);
         expect(tooltipText).toBe('You hovered over the text field');
-        console.log("Tooltip text is: " + tooltipText);
+        console.log("Text field tooltip text: " + tooltipText);
     }
 
-    async hoverOverContrary() {
-        await this.hoverOver_Contrary.hover();
-        await this.hoverOver_ContraryToolTip.waitFor({ state: "visible", timeout: 5000 });
-    
-        const isVisible = await this.hoverOver_ContraryToolTip.isVisible();
+    /**
+     * Verify contrary text tooltip appears on hover
+     */
+    async verifyContraryTooltip(): Promise<void> {
+        await this.hoverOverContrary.hover();
+        await this.waitForElement(this.hoverOverContraryToolTip, 5000);
+
+        const isVisible = await this.isVisible(this.hoverOverContraryToolTip);
         expect(isVisible).toBe(true);
 
-        const tooltipText = await this.hoverOver_ContraryToolTip.textContent();
+        const tooltipText = await this.getText(this.hoverOverContraryToolTip);
         expect(tooltipText).toBe('You hovered over the Contrary');
-        console.log("Tooltip text is: " + tooltipText);
+        console.log("Contrary tooltip text: " + tooltipText);
     }
 
-    async hoveOverSectionNumber() {
-        await this.overOver_SectionNumber.hover();
-        await this.overOver_SectionNumberToolTip.waitFor({ state: "visible", timeout: 5000 });
-    
-        const isVisible = await this.overOver_SectionNumberToolTip.isVisible();
+    /**
+     * Verify section number tooltip appears on hover (FIXED: was "hoveOverSectionNumber")
+     */
+    async verifySectionNumberTooltip(): Promise<void> {
+        await this.hoverOverSectionNumber.hover();
+        await this.waitForElement(this.hoverOverSectionNumberToolTip, 5000);
+
+        const isVisible = await this.isVisible(this.hoverOverSectionNumberToolTip);
         expect(isVisible).toBe(true);
 
-        const tooltipText = await this.overOver_SectionNumberToolTip.textContent();
+        const tooltipText = await this.getText(this.hoverOverSectionNumberToolTip);
         expect(tooltipText).toBe('You hovered over the 1.10.32');
-        console.log("Tooltip text is: " + tooltipText);
+        console.log("Section number tooltip text: " + tooltipText);
     }
 
+    /**
+     * Verify all tooltips work correctly
+     */
+    async verifyAllTooltips(): Promise<void> {
+        await this.verifyButtonTooltip();
+        await this.verifyTextFieldTooltip();
+        await this.verifyContraryTooltip();
+        await this.verifySectionNumberTooltip();
+    }
 }
