@@ -42,3 +42,7 @@ jobs:
     - name: Display Playwright test report
       if: failure()
       run: cat playwright-report/index.html || true
+    - name: Fix vulnerabilities
+      run: npm audit fix
+    - name: Check for vulnerabilities
+      run: npm audit
