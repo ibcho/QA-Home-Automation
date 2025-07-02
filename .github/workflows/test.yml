@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main, tools-qa-testing ]
+  push:
+    branches: [ main, tools-qa-testing ]
+
+jobs:
+  postman-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Newman
+        run: npm install -g newman
+      - name: Run Postman tests
+        run: newman run "./postman_collection/Grocery Store API.postman_collection.json"
+
+  ui-tests:
+    needs: postman-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npm run test:ui 
