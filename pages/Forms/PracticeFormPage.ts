@@ -120,16 +120,18 @@ export default class PracticeFormPage extends BasePage {
     /**
      * Fill subjects field with improved error handling
      */
-    async fillSubjects(subjects: string): Promise<void> {
-        try {
-            await this.safeFill(this.subjects, subjects);
+    async fillSubjects(subjects: string | string[]): Promise<void> {
+        await this.waitForElement(this.subjects);
+        if (Array.isArray(subjects)) {
+            for (const subject of subjects) {
+                await this.subjects.fill('');
+                await this.subjects.pressSequentially(subject);
+                await this.subjects.press('Enter');
+            }
+        } else {
+            await this.subjects.fill('');
+            await this.subjects.pressSequentially(subjects);
             await this.subjects.press('Enter');
-        } catch (error) {
-            console.log(`Error filling subjects, trying alternative approach: ${error}`);
-            // Alternative approach: click and type
-            await this.safeClick(this.subjects);
-            await this.page.keyboard.type(subjects);
-            await this.page.keyboard.press('Enter');
         }
     }
 
@@ -201,7 +203,7 @@ export default class PracticeFormPage extends BasePage {
         gender: 'Male' | 'Female' | 'Other';
         mobile: string;
         dob: { month: string; year: string; day: string };
-        subjects: string;
+        subjects?: string | string[];
         hobbies: string[];
         picturePath: string;
         address: string;
@@ -214,7 +216,9 @@ export default class PracticeFormPage extends BasePage {
         await this.selectGender(formData.gender);
         await this.fillMobile(formData.mobile);
         await this.fillDateOfBirth(formData.dob.month, formData.dob.year, formData.dob.day);
-        await this.fillSubjects(formData.subjects);
+        if (formData.subjects) {
+            await this.fillSubjects(formData.subjects);
+        }
         await this.selectHobbies(formData.hobbies);
         await this.uploadPicture(formData.picturePath);
         await this.fillCurrentAddress(formData.address);
@@ -241,5 +245,19 @@ export default class PracticeFormPage extends BasePage {
 
     getModalContent() {
         return this.page.locator('.modal-content');
+    }
+
+    /**
+     * Wait for the form to be visible
+     */
+    public async waitForFormVisible(timeout: number = 10000): Promise<void> {
+        await this.page.waitForSelector('#firstName', { state: 'visible', timeout });
+    }
+
+    /**
+     * Reload the current page
+     */
+    public async reloadPage(): Promise<void> {
+        await this.page.reload();
     }
 }
