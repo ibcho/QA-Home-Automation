@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import HomePage from '../../pages/HomePage';
-import AlertsFrameWindows from '../../pages/AlertsFrameWindows/AlersFrameWindows';
+import AlertsFrameWindows from '../../pages/AlertsFrameWindows/AlertsFrameWindows';
 import Alerts from '../../pages/AlertsFrameWindows/Alerts';
 import BrowserWindows from '../../pages/AlertsFrameWindows/BrowserWindows';
 import ModalDialogs from '../../pages/AlertsFrameWindows/ModalDialogs';
@@ -26,7 +26,7 @@ test('Complete Alerts, Frame & Windows Regression Test', async ({ page, context 
     });
 
     await test.step('Browser Windows Tests', async () => {
-        await alertsFrameWindows.navigateToBrowserWindows();
+        await alertsFrameWindows.navigateTo('Browser Windows');
         
         // Test new tab functionality
         await browserWindows.clickNewTabButton();
@@ -45,7 +45,7 @@ test('Complete Alerts, Frame & Windows Regression Test', async ({ page, context 
     });
 
     await test.step('Alerts Tests', async () => {
-        await alertsFrameWindows.navigateToAlerts();
+        await alertsFrameWindows.navigateTo('Alerts');
         
         // Test basic alert
         await alerts.handleDialog('accept', ALERT_MESSAGE);
@@ -76,7 +76,7 @@ test('Complete Alerts, Frame & Windows Regression Test', async ({ page, context 
     });
 
     await test.step('Modal Dialogs Tests', async () => {
-        await alertsFrameWindows.navigateToModalDialogs();
+        await alertsFrameWindows.navigateTo('Modal Dialogs');
         
         // Test small modal
         await modalDialogs.clickSmallModal();
@@ -94,7 +94,7 @@ test('Complete Alerts, Frame & Windows Regression Test', async ({ page, context 
     });
 
     await test.step('Nested Frames Tests', async () => {
-        await alertsFrameWindows.navigateToNestedFrames();
+        await alertsFrameWindows.navigateTo('Nested Frames');
         
         // Verify parent frame content
         await nestedFramesPage.verifyParentFrameText('Parent frame');
